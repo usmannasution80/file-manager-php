@@ -1,6 +1,6 @@
 <?php
   $root = '/storage/emulated/0';
-  $path = $_SERVER['REQUEST_URI'];
+  $path = urldecode($_SERVER['REQUEST_URI']);
   $files = scandir($root . $path);
 ?>
 <!DOCTYPE html>
