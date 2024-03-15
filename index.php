@@ -31,13 +31,18 @@
     </style>
   </head>
   <body>
-    <?php
-      if($files){
-        foreach($files as $file){
-          $file .= is_dir($root . $path . $file) ? '/' : '';
-          echo "{$icons[get_type($root.$path.$file)]}<a href=\"$path$file\">$file</a><br/>";
+    <table border="0">
+      <?php
+        if($files){
+          foreach($files as $file){
+            $file .= is_dir($root . $path . $file) ? '/' : '';
+            echo "<tr>"
+                ."<td>{$icons[get_type($root.$path.$file)]}</td>"
+                ."<td><a href=\"$path$file\">$file</a></td>"
+                ."</tr>";
+          }
         }
-      }
-    ?>
+      ?>
+    </table>
   </body>
 </html>
