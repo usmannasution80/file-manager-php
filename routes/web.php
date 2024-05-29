@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('welcome');
+  if(Auth::check())
+    return view('components.main');
+  return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
