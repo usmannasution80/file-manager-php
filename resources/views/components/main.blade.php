@@ -1,3 +1,3 @@
-<div>
-  main
-</div>
+<x-main-container>
+  
+</x-main-container>
