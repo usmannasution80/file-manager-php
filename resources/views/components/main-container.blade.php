@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.css')}}"/>
   </head>
-  <body>
+  <body class="bg-secondary">
     {{ $slot }}
     <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
   </body>
