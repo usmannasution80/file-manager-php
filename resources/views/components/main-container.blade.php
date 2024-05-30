@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.css')}}"/>
   </head>
   <body>
+    {{ $slot }}
     <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
   </body>
 </html>
