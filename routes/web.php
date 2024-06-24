@@ -4,11 +4,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
+Route::get('{url}', function () {
   if(Auth::check())
     return view('components.main');
   return redirect('/login');
-});
+})->where('url', '.*');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
