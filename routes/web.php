@@ -3,12 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::get('{url}', function () {
+Route::get('/{path}', function (Request $request, string $path) {
   if(Auth::check())
     return view('components.main');
-  return redirect('/login');
-})->where('url', '.*');
+  return (new AuthenticatedSessionController)->create();
+})->where('path', '.*');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
