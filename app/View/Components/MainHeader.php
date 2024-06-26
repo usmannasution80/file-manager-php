@@ -13,7 +13,9 @@ class MainHeader extends Component{
   public $links;
 
   public function __construct(){
-    $links = explode('/', $_SERVER['REQUEST_URI']);
+    $uri = $_SERVER['REQUEST_URI'];
+    $uri = preg_replace('/\\/$/i', '', $uri);
+    $links = explode('/', $uri);
     $links_length = count($links);
     for($i=0; $i<$links_length; $i++){
       if($i === 0)
