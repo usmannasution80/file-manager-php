@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::get('/{path}', function (Request $request, string $path) {
+Route::get('/{path}', function () {
   if(Auth::check())
     return view('components.main');
   return (new AuthenticatedSessionController)->create();
