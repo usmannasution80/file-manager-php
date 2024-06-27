@@ -1,7 +1,7 @@
 <x-main-container>
-  <div class="card m-2 border-success" width="100%">
+  <div class="card m-2" width="100%">
     <x-main-header/>
-    <div class="card-body">
-    </div>
+    <x-file-list/>
+  </ul>
   </div>
 </x-main-container>
