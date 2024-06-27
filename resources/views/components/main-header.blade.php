@@ -1,7 +1,7 @@
 <div class="card-header">
   <div id="links" style="white-space: nowrap">
     @foreach($links as $link)
-      <a href="{{$link}}" class="btn">
+      <a href="{{$link}}" style="color: black; text-decoration: none" class="">
         @if($loop->first)
           <i class="fa-solid fa-house"></i>
         @else
