@@ -6,7 +6,7 @@
           <i class="fa-solid fa-house"></i>
         @else
           <b>
-            {{preg_replace('/^.*\\//i', '', $link)}}
+            {{preg_replace('/^.*\\//i', '', urldecode($link))}}
           </b>
         @endif
       </a>
