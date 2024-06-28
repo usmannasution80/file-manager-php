@@ -3,6 +3,5 @@
     <x-main-header/>
     <x-file-list/>
     <x-view-file/>
-  </ul>
   </div>
 </x-main-container>
