@@ -11,8 +11,8 @@ class FileList extends Component{
   public $files = [];
 
   public function __construct(){
-    $path = env('ROOT', '/') . '/';
-    $path = preg_replace('/\\/*$/i', '/', $path);
+    $path = env('ROOT', '/');
+    $path = preg_replace('/\\/*$/i', '', $path);
     $path = $path . preg_replace('/\\/*$/i', '/', $_SERVER['REQUEST_URI']);
     foreach(scandir($path) as $file){
       $icon;
