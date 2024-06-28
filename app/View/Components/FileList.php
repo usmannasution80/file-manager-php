@@ -14,13 +14,15 @@ class FileList extends Component{
     $path = env('ROOT', '/');
     $path = preg_replace('/\\/*$/i', '', $path);
     $path = $path . preg_replace('/\\/*$/i', '/', $_SERVER['REQUEST_URI']);
-    foreach(scandir($path) as $file){
-      $icon;
-      if(is_file($path . $file))
-        $icon = 'fa-regular fa-file';
-      else
-        $icon = 'fa-regular fa-folder';
-      $this->files[$file] = $icon;
+    if(is_dir($path)){
+      foreach(scandir($path) as $file){
+        $icon;
+        if(is_file($path . $file))
+          $icon = 'fa-regular fa-file';
+        else
+          $icon = 'fa-regular fa-folder';
+        $this->files[$file] = $icon;
+      }
     }
   }
 
