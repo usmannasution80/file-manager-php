@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\View\Components\ViewFile;
 
 Route::get('/{path}', function () {
+  if(isset($_GET['view']) && Auth::check())
+    return (new ViewFile())->view_file();
   if(Auth::check())
     return view('components.main');
   return (new AuthenticatedSessionController)->create();
