@@ -25,7 +25,6 @@
   while(links.offsetWidth < links.scrollWidth){
     if(linkAnchors.length === 3)
       break;
-    alert(linkAnchors.length)
     let index = Math.floor(linkAnchors.length / 2);
     linkAnchors[index].nextElementSibling.remove();
     linkAnchors[index].remove();
