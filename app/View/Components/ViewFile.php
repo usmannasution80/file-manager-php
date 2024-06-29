@@ -38,8 +38,8 @@ class ViewFile extends Component{
   }
 
   public function view_file(){
-    header('Content-Type : ' . $this->type);
     header('Content-Dispotition: inline');
+    header('Content-Type: ' . $this->type);
     return readfile($this->path);
   }
 
