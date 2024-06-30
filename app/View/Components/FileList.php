@@ -16,14 +16,31 @@ class FileList extends ViewFile {
     parent::__construct();
 
     if(!$this->is_file){
+
       foreach(scandir($this->path) as $file){
+
         $icon;
-        if(!is_dir($this->path . '/' . $file))
-          $icon = 'fa-regular fa-file';
-        else
-          $icon = 'fa-regular fa-folder';
+
+        switch(preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file))){
+          case 'directory':
+            $icon = 'fa-regular fa-folder';
+            break;
+          case 'audio' :
+            $icon = 'fa-solid fa-file-audio';
+            break;
+          case 'video':
+            $icon = 'fa-solid fa-file-video';
+            break;
+          case 'image':
+            $icon = 'fa-solid fa-file-image';
+            break;
+          default:
+            $icon = 'fa-regular fa-file';
+        }
+
         $this->files[$file] = $icon;
       }
+
     }
 
   }
