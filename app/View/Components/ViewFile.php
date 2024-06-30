@@ -11,7 +11,7 @@ class ViewFile extends Component{
   public $is_file = false;
   public $path = '';
   public $src = null;
-  public $type = null;
+  public $file_info = null;
 
   public function __construct(){
 
@@ -20,7 +20,10 @@ class ViewFile extends Component{
 
     if($this->is_file){
       $this->src = $_SERVER['REQUEST_URI'] . '?view';
-      $this->type = mime_content_type($this->path);
+      $this->file_info = [];
+      $this->file_info['filename'] = preg_replace('/^.*\\//i', '', $this->path);
+      $this->file_info['type'] = mime_content_type($this->path);
+      $this->file_info['size'] = round(filesize($this->path) / 1024 / 1024, 2) . 'MB';
     }
 
   }
@@ -39,7 +42,7 @@ class ViewFile extends Component{
 
   public function view_file(){
     header('Content-Dispotition: inline');
-    header('Content-Type: ' . $this->type);
+    header('Content-Type: ' . $this->file_info['type']);
     return readfile($this->path);
   }
 
