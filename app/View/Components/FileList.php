@@ -18,7 +18,7 @@ class FileList extends ViewFile {
     if(!$this->is_file){
       foreach(scandir($this->path) as $file){
         $icon;
-        if(is_file($this->path . $file))
+        if(!is_dir($this->path . '/' . $file))
           $icon = 'fa-regular fa-file';
         else
           $icon = 'fa-regular fa-folder';
