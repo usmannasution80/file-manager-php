@@ -2,8 +2,16 @@
   @foreach($files as $file => $icon)
     <li class="list-group-item">
       <a style="text-decoration: none; color: black" href="{{url(preg_replace('/\\/*$/i', '', $_SERVER['REQUEST_URI']) . '/' . $file)}}">
-        <i class="{{$icon}}"></i>
-        <span>{{$file}}</span>
+        <table border="0">
+          <tr>
+            <td style="padding-right: 10px">
+              <i class="{{$icon}}"></i>
+            </td>
+            <td>
+              <span>{{$file}}</span>
+            </td>
+          </tr>
+        </table>
       </a>
     </li>
   @endforeach
