@@ -1,6 +1,6 @@
 <ul class="list-group list-group-flush">
   @foreach($files as $file => $icon)
-    <li class="list-group-item">
+    <li class="list-group-item" style="overflow: hidden">
       <a style="text-decoration: none; color: black" href="{{url(preg_replace('/\\/*$/i', '', $_SERVER['REQUEST_URI']) . '/' . $file)}}">
         <table border="0">
           <tr>
