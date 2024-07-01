@@ -17,7 +17,9 @@ class FileList extends ViewFile {
 
     if(!$this->is_file){
 
-      foreach(scandir($this->path) as $file){
+      $files = $this->sort_files(scandir($this->path));
+
+      foreach($files as $file){
 
         $icon;
 
@@ -43,6 +45,18 @@ class FileList extends ViewFile {
 
     }
 
+  }
+
+  protected function sort_files($files){
+    $dirs = [];
+    $not_dirs = [];
+    foreach($files as $file){
+      if(is_dir($this->path . '/' . $file))
+        array_push($dirs, $file);
+      else
+        array_push($not_dirs, $file);
+    }
+    return array_merge($dirs, $not_dirs);
   }
 
   public function render(): View|Closure|string{
