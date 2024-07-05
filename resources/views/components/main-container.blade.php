@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{asset('fontawesome/css/fontawesome.css')}}"/>
     <link rel="stylesheet" href="{{asset('fontawesome/css/brands.css')}}"/>
     <link rel="stylesheet" href="{{asset('fontawesome/css/solid.css')}}"/>
+    <link rel="stylesheet" href="{{asset('style.css')}}"/>
   </head>
   <body class="bg-secondary">
     {{ $slot }}
