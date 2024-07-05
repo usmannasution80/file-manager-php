@@ -1,3 +1,11 @@
+#header-links {
+  white-space: nowrap;
+  overflow: hidden;
+}
+#header-links > a {
+  color: black;
+  text-decoration: none
+}
 .popup-menu-content {
   display: none;
   position: absolute;

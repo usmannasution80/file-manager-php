@@ -1,7 +1,7 @@
 <div class="card-header">
-  <div id="links" style="white-space: nowrap">
+  <div id="header-links">
     @foreach($links as $link)
-      <a href="{{$link}}" style="color: black; text-decoration: none" class="">
+      <a href="{{$link}}">
         @if($loop->first)
           <i class="fa-solid fa-house"></i>
         @else
@@ -18,7 +18,7 @@
 </div>
 <script>
 
-  let links = document.getElementById('links');
+  let links = document.getElementById('header-links');
   let linkAnchors = links.getElementsByTagName('a');
   let isThereAnchorMissing = false;
 
@@ -39,6 +39,4 @@
     linkAnchors[index].after(span);
     linkAnchors[index].remove();
   }
-
-  links.style.overflow = 'hidden';
 </script>
