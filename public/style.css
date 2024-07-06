@@ -6,6 +6,11 @@
   color: black;
   text-decoration: none
 }
+#header-setting-button {
+  max-width: 50px;
+  padding: 0px;
+  text-align: center;
+}
 .popup-menu-content {
   display: none;
   position: absolute;
