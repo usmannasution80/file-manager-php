@@ -10,7 +10,7 @@
         </div>
       @endif
       <div class="modal-body">
-        test
+        {{$content}}
       </div>
       @if(isset($footer))
         <div class="modal-footer">
