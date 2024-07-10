@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{asset('fontawesome/css/brands.css')}}"/>
     <link rel="stylesheet" href="{{asset('fontawesome/css/solid.css')}}"/>
     <link rel="stylesheet" href="{{asset('style.css')}}"/>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body class="bg-secondary">
     {{ $slot }}
