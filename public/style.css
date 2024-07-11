@@ -17,3 +17,16 @@
   white-space: nowrap;
   text-align: center;
 }
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+.loading .row {
+  height: 100vh;
+}
