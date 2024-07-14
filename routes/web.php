@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\View\Components\ViewFile;
+use App\Http\Controllers\File;
 
 Route::get('/{path}', function () {
   if(isset($_GET['view']) && Auth::check())
@@ -14,6 +15,8 @@ Route::get('/{path}', function () {
     return view('components.main');
   return (new AuthenticatedSessionController)->create();
 })->where('path', '.*');
+
+Route::post('/{path}', [File::class, 'upload'])->where('path', '.*');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

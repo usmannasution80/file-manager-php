@@ -33,6 +33,20 @@
     </div>
   </div>
 </div>
+<x-dialog id="upload">
+  <x-slot:title>
+    Upload File
+  </x-slot:title>
+  <x-slot:content>
+    <x-form type="file" input-id="file-input"/>
+  </x-slot:content>
+  <x-slot:footer>
+    <button id="upload-button" class="btn btn-primary">
+      Upload
+    </button>
+  </x-slot:footer>
+</x-dialog>
+<x-loading loadingName="uploadLoading"/>
 <script>
 
   let links = document.getElementById('header-links');
@@ -56,4 +70,21 @@
     linkAnchors[index].after(span);
     linkAnchors[index].remove();
   }
+
+  document.getElementById('upload-button').onclick = (e) => {
+    uploadLoadingShow();
+    let formData = new FormData();
+    formData.append('file', document.getElementById('file-input').files[0]);
+    axios.post(window.location.href, formData, {headers: {
+    'Content-Type': 'multipart/form-data'
+  }})
+    .then((response) => {
+      uploadLoadingHide();
+      window.location.reload();
+    })
+    .catch((error) => {
+      uploadLoadingHide();
+      alert(error)
+    });
+  };
 </script>
