@@ -16,7 +16,8 @@ Route::get('/{path}', function () {
   return (new AuthenticatedSessionController)->create();
 })->where('path', '.*');
 
-Route::post('/{path}', [File::class, 'upload'])->where('path', '.*');
+if(Auth::check())
+  Route::post('/{path}', [File::class, 'upload'])->where('path', '.*');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
