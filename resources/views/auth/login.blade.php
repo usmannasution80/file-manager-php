@@ -2,8 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <form method="POST" action="">
 
         <!-- Email Address -->
         <div>
@@ -39,9 +38,22 @@
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button type="button" class="ms-3" id="login-button">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
     </form>
 </x-guest-layout>
+<script>
+  document.getElementById('login-button').onclick = e => {
+    axios.post('/sanctum/csrf-cookie').then(response => {
+      axios.post('/?login', {
+      email : document.getElementById('email').value,
+      password : document.getElementById('password'),
+      _token : '{{csrf_token()}}'
+    }).then(r => window.location.reload())
+    .catch(err => alert(err));
+    });
+    
+  }
+</script>

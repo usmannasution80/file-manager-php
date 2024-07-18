@@ -28,6 +28,10 @@
             <i class="fa-solid fa-file-arrow-up"></i>
             <span>Upload</span>
           </span>
+          <span id="logout-button">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+          </span>
         </x-slot:content>
       </x-popup-menu>
     </div>
@@ -71,13 +75,13 @@
     linkAnchors[index].remove();
   }
 
-  document.getElementById('upload-button').onclick = (e) => {
+  document.getElementById('upload-button').onclick = e => {
     uploadLoadingShow();
     let formData = new FormData();
     formData.append('file', document.getElementById('file-input').files[0]);
     axios.post(window.location.href, formData, {headers: {
-    'Content-Type': 'multipart/form-data'
-  }})
+      'Content-Type': 'multipart/form-data'
+    }})
     .then((response) => {
       uploadLoadingHide();
       window.location.reload();
@@ -87,4 +91,9 @@
       alert(error)
     });
   };
+  document.getElementById('logout-button').onclick = e => {
+    axios.post('/?logout')
+    .then(r => window.location.reload())
+    .catch(r => window.location.reload());
+  }
 </script>
