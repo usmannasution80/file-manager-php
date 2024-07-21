@@ -46,10 +46,10 @@
 </x-guest-layout>
 <script>
   document.getElementById('login-button').onclick = e => {
-    axios.post('/sanctum/csrf-cookie').then(response => {
+    axios.get('/sanctum/csrf-cookie').then(response => {
       axios.post('/?login', {
       email : document.getElementById('email').value,
-      password : document.getElementById('password'),
+      password : document.getElementById('password').value,
       _token : '{{csrf_token()}}'
     }).then(r => window.location.reload())
     .catch(err => alert(err));

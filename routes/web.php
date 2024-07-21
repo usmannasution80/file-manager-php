@@ -5,19 +5,24 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Requests\Auth\LoginRequest;
 use App\View\Components\ViewFile;
 use App\Http\Controllers\File;
+use Illuminate\Foundation\Http\FormRequest;
 
 Route::get('/{path}', function () {
   if(isset($_GET['view']) && Auth::check())
     return (new ViewFile())->view_file();
   if(Auth::check())
     return view('components.main');
-  return (new AuthenticatedSessionController)->create();
+  return view('auth.login');
 })->where('path', '.*');
 
-if(Auth::check())
-  Route::post('/{path}', [File::class, 'upload'])->where('path', '.*');
+Route::post('/{path}', function(){
+  if(!Auth::check())
+    return (new AuthenticatedSessionController())->store(LoginRequest::createFrom(request()));
+  return (new File())->upload();
+})->where('path', '.*');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
