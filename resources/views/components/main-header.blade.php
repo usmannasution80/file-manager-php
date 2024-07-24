@@ -88,7 +88,8 @@
     })
     .catch((error) => {
       uploadLoadingHide();
-      alert(error)
+      alert('Seems like you are not logged in!');
+      window.location.reload();
     });
   };
   document.getElementById('logout-button').onclick = e => {
