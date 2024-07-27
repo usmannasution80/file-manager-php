@@ -13,5 +13,6 @@
   <body class="bg-secondary">
     {{ $slot }}
     <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
+    <script src="{{asset('script.js')}}"></script>
   </body>
 </html>
