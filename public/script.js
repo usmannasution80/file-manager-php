@@ -4,7 +4,13 @@
     return;
   for(let btnShow of btnShows){
     btnShow.onclick = function(e){
-      this.parentElement.querySelector('.popup-menu-content').style.display = 'block';
+      let popupMenuContent = this.parentElement.querySelector('.popup-menu-content');
+      let viewportWidth = window.innerWidth;
+      popupMenuContent.style.display = 'block';
+      let rect = popupMenuContent.getBoundingClientRect();
+      let widthOnViewport = rect.left + popupMenuContent.offsetWidth;
+      if(widthOnViewport > viewportWidth)
+        popupMenuContent.style.right = 0;
       e.stopPropagation();
     }
     contents = btnShow.parentElement.querySelectorAll('.popup-menu-content > ul > *');
