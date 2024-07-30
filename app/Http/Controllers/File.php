@@ -22,4 +22,12 @@ class File extends Controller{
     else
       abort(500);
   }
+  public function delete(){
+    $path = preg_replace('/\\?.*/', '', urldecode($_SERVER['REQUEST_URI']));
+    $path = preg_replace('/\\/+/', '/', env('ROOT') . '/' . $path);
+    if(!is_file($path))
+      abort(404, 'File not found!');
+    unlink($path);
+    return response()->noContent();
+  }
 }

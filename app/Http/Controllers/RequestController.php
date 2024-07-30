@@ -21,6 +21,8 @@ class RequestController extends Controller{
       return (new AuthenticatedSessionController())->store(LoginRequest::createFrom(request()));
     if(isset($_GET['logout']))
       return (new AuthenticatedSessionController())->destroy(request());
+    if(isset($_GET['delete']))
+      return (new File())->delete();
     return (new File())->upload();
   }
 }

@@ -27,6 +27,24 @@
       <i class="fa-solid fa-download"></i>
       <span>Download</span>
     </a>
+    <button href="{{$src}}?delete" class="btn btn-danger" id="delete-button">
+      <i class="fa-solid fa-trash-can"></i>
+      <span>Delete</span>
+    </button>
   </div>
 </div>
+<script>
+  (() => {
+    document.getElementById('delete-button').onclick = function(e){
+      axios.post('?delete')
+      .then(r => {
+        alert('File deleted!');
+        window.location.href = decodeURI(window.location.pathname).replace(/\/[^/]+$/i, '/');
+      })
+      .catch(err => {
+        alert(err);
+      });
+    };
+  })();
+</script>
 @endif
