@@ -27,12 +27,24 @@
       <i class="fa-solid fa-download"></i>
       <span>Download</span>
     </a>
-    <button href="{{$src}}?delete" class="btn btn-danger" id="delete-button">
+    <button data-bs-toggle="modal" data-bs-target="#delete-modal" class="btn btn-danger">
       <i class="fa-solid fa-trash-can"></i>
       <span>Delete</span>
     </button>
   </div>
 </div>
+<x-dialog id="delete-modal">
+  <x-slot:title>
+    WARNING!
+  </x-slot:title>
+  <x-slot:content>
+    Are you sure to delete this file?
+  </x-slot:content>
+  <x-slot:footer>
+    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button class="btn btn-danger" id="delete-button">Delete</button>
+  </x-slot:footer>
+</x-dialog>
 <script>
   (() => {
     document.getElementById('delete-button').onclick = function(e){
