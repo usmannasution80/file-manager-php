@@ -30,4 +30,13 @@ class File extends Controller{
     unlink($path);
     return response()->noContent();
   }
+  public function rename($new_name){
+    $new_name = preg_replace('/[^a-z0-9\\s.]+/i', '', $new_name);
+    $path = env('ROOT') . urldecode($_SERVER['REQUEST_URI']);
+    $path = preg_replace('/\\/+/i', '/', $path);
+    $path = preg_replace('/\\/[^\\/]+$/i', '', $path) . '/';
+    $prev_name = preg_replace('/^.*\\/+/i', '', urldecode($_SERVER['REQUEST_URI']));
+    $prev_name = preg_replace('/\\?.*$/i', '', $prev_name);
+    rename($path . $prev_name, $path . $new_name);
+  }
 }

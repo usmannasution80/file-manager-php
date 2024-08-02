@@ -23,6 +23,8 @@ class RequestController extends Controller{
       return (new AuthenticatedSessionController())->destroy(request());
     if(isset($_GET['delete']))
       return (new File())->delete();
+    if(isset($_GET['rename']))
+      return (new File())->rename($_POST['filename']);
     return (new File())->upload();
   }
 }

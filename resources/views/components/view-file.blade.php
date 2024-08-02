@@ -31,8 +31,28 @@
       <i class="fa-solid fa-trash-can"></i>
       <span>Delete</span>
     </button>
+    <button data-bs-toggle="modal" data-bs-target="#rename-modal" class="btn btn-warning">
+      <i class="fa-solid fa-pen"></i>
+      <span>Rename</span>
+    </button>
   </div>
 </div>
+<x-dialog id="rename-modal">
+  <x-slot:title>
+    Rename File
+  </x-slot:title>
+  <x-slot:content>
+    <x-form input-id="rename-input" placeholder="New filename"/>
+  </x-slot:content>
+  <x-slot:footer>
+    <button class="btn btn-secondary" data-bs-dismiss="modal">
+      Cancel
+    </button>
+    <button id="rename-button" class="btn btn-primary">
+      Save
+    </button>
+  </x-slot:footer>
+</x-dialog>
 <x-dialog id="delete-modal">
   <x-slot:title>
     WARNING!
@@ -56,6 +76,15 @@
       .catch(err => {
         alert(err);
       });
+    };
+    document.getElementById('rename-button').onclick = function(e){
+      let filename = document.getElementById('rename-input').value;
+      axios.post('?rename', 'filename=' + encodeURIComponent(filename))
+      .then(r => {
+        alert('File name changed!');
+        window.location.href = window.location.href.replace(/\/[^\/]+$/i, '/' + encodeURIComponent(filename))
+      })
+      .catch(err => alert(err));
     };
   })();
 </script>
