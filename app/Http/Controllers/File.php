@@ -31,7 +31,7 @@ class File extends Controller{
     return response()->noContent();
   }
   public function rename($new_name){
-    $new_name = preg_replace('/[^a-z0-9\\s.]+/i', '', $new_name);
+    $new_name = str_replace('/', '', $new_name);
     $path = env('ROOT') . urldecode($_SERVER['REQUEST_URI']);
     $path = preg_replace('/\\/+/i', '/', $path);
     $path = preg_replace('/\\/[^\\/]+$/i', '', $path) . '/';
