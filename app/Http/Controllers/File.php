@@ -38,5 +38,6 @@ class File extends Controller{
     $prev_name = preg_replace('/^.*\\/+/i', '', urldecode($_SERVER['REQUEST_URI']));
     $prev_name = preg_replace('/\\?.*$/i', '', $prev_name);
     rename($path . $prev_name, $path . $new_name);
+    return $new_name;
   }
 }

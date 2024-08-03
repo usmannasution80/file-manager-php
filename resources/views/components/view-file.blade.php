@@ -82,7 +82,7 @@
       axios.post('?rename', 'filename=' + encodeURIComponent(filename))
       .then(r => {
         alert('File name changed!');
-        window.location.href = window.location.href.replace(/\/[^\/]+$/i, '/' + encodeURIComponent(filename))
+        window.location.href = window.location.href.replace(/\/[^\/]+$/i, '/' + r.data)
       })
       .catch(err => alert(err));
     };
