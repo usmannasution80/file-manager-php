@@ -1,4 +1,5 @@
 (() => {
+  let viewportWidth = window.innerWidth;
   let btnShows = document.querySelectorAll('.popup-show');
   if(!btnShows.length)
     return;
@@ -8,7 +9,6 @@
       if(popupMenuContent.style.display === 'block')
         return popupMenuContent.style.display = 'none';
       popupMenuContent.style.display = 'block';
-      let viewportWidth = window.innerWidth;
       let rect = popupMenuContent.getBoundingClientRect();
       let widthOnViewport = rect.left + popupMenuContent.offsetWidth;
       if(widthOnViewport > viewportWidth)
