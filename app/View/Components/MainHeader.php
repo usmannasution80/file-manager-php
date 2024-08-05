@@ -11,6 +11,7 @@ class MainHeader extends Component{
    * Create a new component instance.
    */
   public $links;
+  public $is_path_file;
 
   public function __construct(){
     $uri = $_SERVER['REQUEST_URI'];
@@ -24,6 +25,7 @@ class MainHeader extends Component{
         $links[$i] = preg_replace('/\\/+/i', '/', $links[$i-1] . '/' . $links[$i]);
     }
     $this->links = $links;
+    $this->is_path_file = (new ViewFile())->is_file;
   }
 
   /**

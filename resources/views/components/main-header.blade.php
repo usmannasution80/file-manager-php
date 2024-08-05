@@ -24,10 +24,12 @@
           </button>
         </x-slot:button>
         <x-slot:content>
-          <span data-bs-toggle="modal" data-bs-target="#upload">
-            <i class="fa-solid fa-file-arrow-up"></i>
-            <span>Upload</span>
-          </span>
+          @if(!$is_path_file)
+            <span data-bs-toggle="modal" data-bs-target="#upload">
+              <i class="fa-solid fa-file-arrow-up"></i>
+              <span>Upload</span>
+            </span>
+          @endif
           <span id="logout-button">
             <i class="fa-solid fa-right-from-bracket"></i>
             <span>Logout</span>
@@ -37,20 +39,22 @@
     </div>
   </div>
 </div>
-<x-dialog id="upload">
-  <x-slot:title>
-    Upload File
-  </x-slot:title>
-  <x-slot:content>
-    <x-form type="file" input-id="file-input"/>
-  </x-slot:content>
-  <x-slot:footer>
-    <button id="upload-button" class="btn btn-primary">
-      Upload
-    </button>
-  </x-slot:footer>
-</x-dialog>
-<x-loading loadingName="uploadLoading"/>
+@if(!$is_path_file)
+  <x-dialog id="upload">
+    <x-slot:title>
+      Upload File
+    </x-slot:title>
+    <x-slot:content>
+      <x-form type="file" input-id="file-input"/>
+    </x-slot:content>
+    <x-slot:footer>
+      <button id="upload-button" class="btn btn-primary">
+        Upload
+      </button>
+    </x-slot:footer>
+  </x-dialog>
+  <x-loading loadingName="uploadLoading"/>
+@endif
 <script>
 
   let links = document.getElementById('header-links');
@@ -75,6 +79,7 @@
     linkAnchors[index].remove();
   }
 
+  @if(!$is_path_file)
   document.getElementById('upload-button').onclick = e => {
     uploadLoadingShow();
     let formData = new FormData();
@@ -92,6 +97,8 @@
       window.location.reload();
     });
   };
+  @endif
+
   document.getElementById('logout-button').onclick = e => {
     axios.post('/?logout')
     .then(r => window.location.reload())
