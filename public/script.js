@@ -5,8 +5,10 @@
   for(let btnShow of btnShows){
     btnShow.onclick = function(e){
       let popupMenuContent = this.parentElement.querySelector('.popup-menu-content');
-      let viewportWidth = window.innerWidth;
+      if(popupMenuContent.style.display === 'block')
+        return popupMenuContent.style.display = 'none';
       popupMenuContent.style.display = 'block';
+      let viewportWidth = window.innerWidth;
       let rect = popupMenuContent.getBoundingClientRect();
       let widthOnViewport = rect.left + popupMenuContent.offsetWidth;
       if(widthOnViewport > viewportWidth)
