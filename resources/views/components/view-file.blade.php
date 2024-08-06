@@ -36,6 +36,26 @@
       <span>Rename</span>
     </button>
   </div>
+  <table border="0" style="width:100%">
+    <tr>
+      <td>
+        @if($prev)
+          <a class="btn btn-primary" href="{{$prev}}">
+            <i class="fa-solid fa-circle-left"></i>
+            <span>Prev.</span>
+          </a>
+        @endif
+      </td>
+      <td style="text-align:right">
+        @if($next)
+          <a class="btn btn-primary" href="{{$next}}">
+            <span>Next</span>
+            <i class="fa-solid fa-circle-right"></i>
+          </a>
+        @endif
+      </td>
+    </tr>
+  </table>
 </div>
 <x-dialog id="rename-modal">
   <x-slot:title>

@@ -11,9 +11,9 @@ class FileList extends ViewFile {
 
   public $files = [];
 
-  public function __construct(){
+  public function __construct($path = null){
 
-    parent::__construct();
+    parent::__construct($path);
 
     if(!$this->is_file){
 
