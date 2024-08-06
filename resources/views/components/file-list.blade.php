@@ -1,33 +1,53 @@
-<ul class="list-group list-group-flush">
-  @foreach($files as $file)
-    <li class="list-group-item" style="overflow: hidden">
-      <a style="text-decoration: none; color: black" href="{{url(preg_replace('/\\/*$/i', '', $_SERVER['REQUEST_URI']) . '/' . urlencode($file['filename']))}}">
-        <table border="0">
-          <tr>
-            <td style="padding-right: 10px">
-              @switch($file['type'])
-                @case('directory')
-                  <i class="fa-regular fa-folder"></i>
-                  @break
-                @case('video')
-                  <i class="fa-solid fa-file-video"></i>
-                  @break
-                @case('audio')
-                  <i class="fa-solid fa-file-audio"></i>
-                  @break
-                @case('image')
-                  <i class="fa-solid fa-file-image"></i>
-                  @break
-                @default
-                  <i class="fa-regular fa-file"></i>
-              @endswitch
-            </td>
-            <td>
-              <span>{{$file['filename']}}</span>
-            </td>
-          </tr>
-        </table>
-      </a>
-    </li>
-  @endforeach
+<ul class="list-group list-group-flush" id="{{$file_list_id}}">
 </ul>
+<script>
+  (() => {
+    let fileListContainer = document.getElementById('{{$file_list_id}}');
+    let url = (window.location.pathname + '/').replace(/\/+/, '/');
+    let fileList = {!!json_encode($files)!!};
+    let dirs = [];
+    let files = [];
+    for(let file of fileList){
+      if(file['type'] === 'directory')
+        dirs.push(file);
+      else
+        files.push(file);
+    }
+    files = [...dirs, ...files];
+    for(file of files){
+      let icon;
+      switch(file['type']){
+        case 'directory':
+          icon = 'fa-regular fa-folder';
+          break;
+        case 'video':
+          icon = 'fa-solid fa-file-video';
+          break;
+        case 'audio':
+          icon = 'fa-solid fa-file-audio';
+          break;
+        case 'picture':
+          icon = 'fa-solid fa-file-image';
+          break;
+        default:
+          icon = 'fa-regular fa-file';
+      }
+      fileListContainer.innerHTML += `
+        <li class="list-group-item" style="overflow: hidden">
+          <a style="text-decoration: none; color: black" href="${url + encodeURIComponent(file['filename'])}">
+            <table border="0">
+              <tr>
+                <td style="padding-right: 10px">
+                  <i class="${icon}"></icon>
+                </td>
+                <td>
+                  <span>${file['filename']}</span>
+                </td>
+              </tr>
+            </table>
+          </a>
+        </li>
+      `;
+    }
+  })();
+</script>

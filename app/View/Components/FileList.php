@@ -10,6 +10,7 @@ use App\View\Components\ViewFile;
 class FileList extends ViewFile {
 
   public $files = [];
+  public $file_list_id = null;
 
   public function __construct($path = null){
 
@@ -17,7 +18,9 @@ class FileList extends ViewFile {
 
     if(!$this->is_file){
 
-      $files = $this->sort_files(scandir($this->path));
+      $this->file_list_id = generate_random_id();
+
+      $files = scandir($this->path);
 
       foreach($files as $file){
         array_push($this->files, [
@@ -28,18 +31,6 @@ class FileList extends ViewFile {
 
     }
 
-  }
-
-  protected function sort_files($files){
-    $dirs = [];
-    $not_dirs = [];
-    foreach($files as $file){
-      if(is_dir($this->path . '/' . $file))
-        array_push($dirs, $file);
-      else
-        array_push($not_dirs, $file);
-    }
-    return array_merge($dirs, $not_dirs);
   }
 
   public function render(): View|Closure|string{
