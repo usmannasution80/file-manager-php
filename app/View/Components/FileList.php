@@ -20,27 +20,10 @@ class FileList extends ViewFile {
       $files = $this->sort_files(scandir($this->path));
 
       foreach($files as $file){
-
-        $icon;
-
-        switch(preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file))){
-          case 'directory':
-            $icon = 'fa-regular fa-folder';
-            break;
-          case 'audio' :
-            $icon = 'fa-solid fa-file-audio';
-            break;
-          case 'video':
-            $icon = 'fa-solid fa-file-video';
-            break;
-          case 'image':
-            $icon = 'fa-solid fa-file-image';
-            break;
-          default:
-            $icon = 'fa-regular fa-file';
-        }
-
-        $this->files[$file] = $icon;
+        array_push($this->files, [
+          'filename' => $file,
+          'type' => preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file))
+        ]);
       }
 
     }
