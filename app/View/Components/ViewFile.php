@@ -22,7 +22,7 @@ class ViewFile extends Component{
     $this->is_file = !is_dir($this->path);
 
     if($this->is_file){
-      $this->src = $_SERVER['REQUEST_URI'] . '?view';
+      $this->src = preg_replace('/\\?[^\\?]+$/', '?view', $_SERVER['REQUEST_URI']);
       $this->file_info = [];
       $this->file_info['filename'] = preg_replace('/^.*\\//i', '', $this->path);
       $this->file_info['type'] = mime_content_type($this->path);
@@ -53,22 +53,11 @@ class ViewFile extends Component{
 
   public function set_prev_next(){
     $path = preg_replace('/[^\\/]+$/', '', $_SERVER['REQUEST_URI']);
+    if(isset($_GET['prev']))
+      $this->prev = $path . $_GET['prev'];
+    if(isset($_GET['next']))
+      $this->next = $path . $_GET['next'];
     $files = (new FileList($path))->files;
-    $i = 0;
-    foreach($files as $file){
-      if($file['filename'] === $this->file_info['filename']){
-        if(isset($files[$i-1])){
-          if((new ViewFile($path . $files[$i-1]['filename'], false))->is_file)
-            $this->prev = $path . urlencode($files[$i-1]['filename']);
-        }
-        if(isset($files[$i+1])){
-          if((new ViewFile($path . $files[$i+1]['filename'], false))->is_file)
-            $this->next = $path . urlencode($files[$i+1]['filename']);
-        }
-        break;
-      }
-      $i++;
-    }
   }
 
 }
