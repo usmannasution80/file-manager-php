@@ -22,7 +22,7 @@ class ViewFile extends Component{
     $this->is_file = !is_dir($this->path);
 
     if($this->is_file){
-      $this->src = preg_replace('/\\?[^\\?]+$/', '?view', $_SERVER['REQUEST_URI']);
+      $this->src = preg_replace('/\\?[^\\?]+$/', '', $_SERVER['REQUEST_URI']) . '?view';
       $this->file_info = [];
       $this->file_info['filename'] = preg_replace('/^.*\\//i', '', $this->path);
       $this->file_info['type'] = mime_content_type($this->path);
