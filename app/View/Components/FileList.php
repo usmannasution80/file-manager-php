@@ -17,20 +17,24 @@ class FileList extends ViewFile {
     parent::__construct($path);
 
     if(!$this->is_file){
-
       $this->file_list_id = generate_random_id();
-
-      $files = scandir($this->path);
-
-      foreach($files as $file){
-        array_push($this->files, [
-          'filename' => $file,
-          'type' => preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file))
-        ]);
-      }
-
+      $this->set_files();
     }
 
+  }
+
+  public function set_files(){
+    $files = scandir($this->path);
+    foreach($files as $file){
+      array_push($this->files, [
+        'filename' => $file,
+        'type' => preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file))
+      ]);
+    }
+  }
+
+  public function as_json(){
+    return json_encode($this->files);
   }
 
   public function render(): View|Closure|string{
