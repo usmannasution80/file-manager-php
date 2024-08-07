@@ -39,20 +39,16 @@
   <table border="0" style="width:100%">
     <tr>
       <td>
-        @if($prev)
-          <a class="btn btn-primary" href="{{$prev}}">
-            <i class="fa-solid fa-circle-left"></i>
-            <span>Prev.</span>
-          </a>
-        @endif
+        <a class="btn btn-primary" id="{{$prev_id}}" style="display:none">
+          <i class="fa-solid fa-circle-left"></i>
+          <span>Prev.</span>
+        </a>
       </td>
       <td style="text-align:right">
-        @if($next)
-          <a class="btn btn-primary" href="{{$next}}">
-            <span>Next</span>
-            <i class="fa-solid fa-circle-right"></i>
-          </a>
-        @endif
+        <a class="btn btn-primary" id="{{$next_id}}" style="display:none">
+          <span>Next</span>
+          <i class="fa-solid fa-circle-right"></i>
+        </a>
       </td>
     </tr>
   </table>
@@ -86,6 +82,41 @@
   </x-slot:footer>
 </x-dialog>
 <script>
+  (() => {
+    let path = window.location.pathname.replace(/\/[^\/]+$/, '/');
+    const set_prev_next = files => {
+      let i = 0;
+      let prev = document.getElementById('{{$prev_id}}');
+      let next = document.getElementById('{{$next_id}}');
+      for(file of files){
+        if(file['filename'] === '{{$file_info['filename']}}'){
+          if(i > 0){
+            if(files[i-1].type !== 'directory'){
+              prev.setAttribute('href', path + encodeURIComponent(files[i-1]['filename']));
+              prev.style.display = 'inline-block';
+            }
+          }
+          if(i < files.length-1){
+            if(files[i+1].type !== 'directory'){
+              next.setAttribute('href', path + encodeURIComponent(files[i+1]['filename']));
+              next.style.display = 'inline-block';
+            }
+          }
+          break;
+        }
+        i++;
+      }
+    };
+    let files = strg('files');
+    if(files)
+      if(files.path === path)
+        return set_prev_next(files.files);
+    axios.get(path + '?list')
+    .then(r => {
+      files = strg('files', {path, files : r.data}).files;
+      set_prev_next(files);
+    }).catch(err => alert(err));
+  })();
   (() => {
     document.getElementById('delete-button').onclick = function(e){
       axios.post('?delete')

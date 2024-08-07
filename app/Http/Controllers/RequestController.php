@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\File;
 use App\Http\Requests\Auth\LoginRequest;
+use App\View\Components\FileList;
 
 class RequestController extends Controller{
   public function get(){
     if(isset($_GET['view']) && Auth::check())
       return (new ViewFile())->view_file();
+    if(isset($_GET['list']) && Auth::check())
+      return (new FileList())->as_json();
     if(Auth::check())
       return view('components.main');
     return view('auth.login');

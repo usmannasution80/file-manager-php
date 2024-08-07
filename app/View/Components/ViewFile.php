@@ -13,8 +13,8 @@ class ViewFile extends Component{
   public $path = '';
   public $src = null;
   public $file_info = null;
-  public $next = null;
-  public $prev = null;
+  public $next_id = null;
+  public $prev_id = null;
 
   public function __construct($path = null, $set_prev_next = true){
 
@@ -27,8 +27,8 @@ class ViewFile extends Component{
       $this->file_info['filename'] = preg_replace('/^.*\\//i', '', $this->path);
       $this->file_info['type'] = mime_content_type($this->path);
       $this->file_info['size'] = round(filesize($this->path) / 1024 / 1024, 2) . 'MB';
-      if($set_prev_next)
-        $this->set_prev_next();
+      $this->next_id = generate_random_id();
+      $this->prev_id = generate_random_id();
     }
 
   }
@@ -49,15 +49,6 @@ class ViewFile extends Component{
     header('Content-Dispotition: inline');
     header('Content-Type: ' . $this->file_info['type']);
     return readfile($this->path);
-  }
-
-  public function set_prev_next(){
-    $path = preg_replace('/[^\\/]+$/', '', $_SERVER['REQUEST_URI']);
-    if(isset($_GET['prev']))
-      $this->prev = $path . $_GET['prev'];
-    if(isset($_GET['next']))
-      $this->next = $path . $_GET['next'];
-    $files = (new FileList($path))->files;
   }
 
 }

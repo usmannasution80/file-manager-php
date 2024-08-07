@@ -1,3 +1,4 @@
+@if(!$is_file)
 <ul class="list-group list-group-flush" id="{{$file_list_id}}">
 </ul>
 <script>
@@ -34,15 +35,7 @@
           icon = 'fa-regular fa-file';
       }
 
-      let url = path + encodeURIComponent(file['filename']) + '?';
-
-      if(i > 0)
-        if(files[i-1]['type'] !== 'directory')
-          url += 'prev=' + encodeURIComponent(files[i-1]['filename']) + '&';
-
-      if(i+1 < files.length)
-        if(files[i+1]['type'] !== 'directory')
-          url += 'next=' + encodeURIComponent(files[i+1]['filename']);
+      let url = path + encodeURIComponent(file['filename']);
 
       fileListContainer.innerHTML += `
         <li class="list-group-item" style="overflow: hidden">
@@ -64,3 +57,4 @@
     }
   })();
 </script>
+@endif
