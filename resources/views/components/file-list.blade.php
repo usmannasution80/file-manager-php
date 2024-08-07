@@ -3,7 +3,7 @@
 <script>
   (() => {
     let fileListContainer = document.getElementById('{{$file_list_id}}');
-    let url = (window.location.pathname + '/').replace(/\/+/, '/');
+    let path = (window.location.pathname + '/').replace(/\/+/, '/');
     let fileList = {!!json_encode($files)!!};
     let dirs = [];
     let files = [];
@@ -14,6 +14,7 @@
         files.push(file);
     }
     files = [...dirs, ...files];
+    let i = 0;
     for(file of files){
       let icon;
       switch(file['type']){
@@ -32,9 +33,20 @@
         default:
           icon = 'fa-regular fa-file';
       }
+
+      let url = path + encodeURIComponent(file['filename']) + '?';
+
+      if(i > 0)
+        if(files[i-1]['type'] !== 'directory')
+          url += 'prev=' + encodeURIComponent(files[i-1]['filename']) + '&';
+
+      if(i+1 < files.length)
+        if(files[i+1]['type'] !== 'directory')
+          url += 'next=' + encodeURIComponent(files[i+1]['filename']);
+
       fileListContainer.innerHTML += `
         <li class="list-group-item" style="overflow: hidden">
-          <a style="text-decoration: none; color: black" href="${url + encodeURIComponent(file['filename'])}">
+          <a style="text-decoration: none; color: black" href="${url}">
             <table border="0">
               <tr>
                 <td style="padding-right: 10px">
@@ -48,6 +60,7 @@
           </a>
         </li>
       `;
+      i++;
     }
   })();
 </script>
