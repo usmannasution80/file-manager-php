@@ -4,16 +4,16 @@
   (() => {
     let fileListContainer = document.getElementById('{{$file_list_id}}');
     let path = (window.location.pathname + '/').replace(/\/+/, '/');
-    let fileList = {!!json_encode($files)!!};
+    strg('files', {path, files : {!!json_encode($files)!!}});
     let dirs = [];
     let files = [];
-    for(let file of fileList){
+    for(let file of strg('files').files){
       if(file['type'] === 'directory')
         dirs.push(file);
       else
         files.push(file);
     }
-    files = [...dirs, ...files];
+    files = strg('files', {path, files : [...dirs, ...files]}).files;
     let i = 0;
     for(file of files){
       let icon;
