@@ -4,16 +4,16 @@ function strg(key, value){
       if(localStorage.key(i).replace(/_[^_]+$/, '') === key)
         localStorage.removeItem(localStorage.key(i));
     }
-    let type = typeof value;
+    let savedValue;
     if(typeof value === 'object' && value !== null)
-      value = JSON.stringify(value);
+      savedValue = JSON.stringify(value);
     else
-      value = String(value);
+      savedValue = String(value);
     localStorage.setItem(
-      key + '_' + type,
-      value
+      key + '_' + typeof value,
+      savedValue
     );
-    return;
+    return value;
   }
   let searchKey = key;
   for(let i=0;i<localStorage.length;i++){
