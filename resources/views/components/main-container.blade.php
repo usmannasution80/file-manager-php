@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="{{asset('fontawesome/css/solid.css')}}"/>
     <link rel="stylesheet" href="{{asset('style.css')}}"/>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
+    <script src="{{asset('script.js')}}"></script>
   </head>
   <body class="bg-secondary">
     {{ $slot }}
-    <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
-    <script src="{{asset('script.js')}}"></script>
   </body>
 </html>
