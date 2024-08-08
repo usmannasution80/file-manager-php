@@ -10,17 +10,13 @@ use App\View\Components\ViewFile;
 class FileList extends ViewFile {
 
   public $files = [];
-  public $file_list_id = null;
 
   public function __construct($path = null){
 
     parent::__construct($path);
 
-    if(!$this->is_file){
-      $this->file_list_id = generate_random_id();
+    if(!$this->is_file)
       $this->set_files();
-    }
-
   }
 
   public function set_files(){

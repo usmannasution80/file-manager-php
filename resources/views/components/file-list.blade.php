@@ -1,9 +1,9 @@
 @if(!$is_file)
-<ul class="list-group list-group-flush" id="{{$file_list_id}}">
+<ul class="list-group list-group-flush" id="file-list-ul">
 </ul>
 <script>
   (() => {
-    let fileListContainer = document.getElementById('{{$file_list_id}}');
+    let fileListContainer = document.getElementById('file-list-ul');
     let path = (window.location.pathname + '/').replace(/\/+/, '/');
     strg('files', {path, files : {!!json_encode($files)!!}});
     let dirs = [];
@@ -38,11 +38,11 @@
       let url = path + encodeURIComponent(file['filename']);
 
       fileListContainer.innerHTML += `
-        <li class="list-group-item" style="overflow: hidden">
-          <a style="text-decoration: none; color: black" href="${url}">
-            <table border="0">
+        <li class="list-group-item">
+          <a href="${url}">
+            <table>
               <tr>
-                <td style="padding-right: 10px">
+                <td>
                   <i class="${icon}"></icon>
                 </td>
                 <td>
