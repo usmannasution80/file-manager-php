@@ -27,6 +27,8 @@
       <i class="fa-solid fa-download"></i>
       <span>Download</span>
     </a>
+
+    @if(Auth::check())
     <button data-bs-toggle="modal" data-bs-target="#delete-modal" class="btn btn-danger">
       <i class="fa-solid fa-trash-can"></i>
       <span>Delete</span>
@@ -35,6 +37,8 @@
       <i class="fa-solid fa-pen"></i>
       <span>Rename</span>
     </button>
+    @endif
+
   </div>
   <table border="0" style="width:100%">
     <tr>
