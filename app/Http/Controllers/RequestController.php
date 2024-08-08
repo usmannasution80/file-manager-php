@@ -11,7 +11,7 @@ use App\View\Components\FileList;
 
 class RequestController extends Controller{
   public function get(){
-    if(!Auth::check())
+    if(isset($_GET['login']) && !Auth::check())
       return view('auth.login');
     if(isset($_GET['view']))
       return (new ViewFile())->view_file();

@@ -41,6 +41,9 @@
             <x-primary-button type="button" class="ms-3" id="login-button">
                 {{ __('Log in') }}
             </x-primary-button>
+            <x-primary-button type="button" class="ms-3" id="login-guest-button">
+                Continue as guest
+            </x-primary-button>
         </div>
     </form>
 </x-guest-layout>
@@ -54,6 +57,6 @@
     }).then(r => window.location.reload())
     .catch(err => alert(err));
     });
-    
-  }
+  };
+  document.getElementById('login-guest-button').onclick = e => window.location.href = window.location.href.replace(/\?[^\?]+/, '');
 </script>

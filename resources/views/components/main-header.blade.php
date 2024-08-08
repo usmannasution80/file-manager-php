@@ -30,10 +30,17 @@
               <span>Upload</span>
             </span>
           @endif
-          <span id="logout-button">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
-          </span>
+          @if(Auth::check())
+            <span id="logout-button">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Logout</span>
+            </span>
+          @else
+            <a href="?login">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span>Login</span>
+            </a>
+          @endif
         </x-slot:content>
       </x-popup-menu>
     </div>
@@ -55,6 +62,7 @@
   </x-dialog>
   <x-loading loadingName="uploadLoading"/>
 @endif
+<x-loading loadingName="logoutLoading"/>
 <script>
 
   let links = document.getElementById('header-links');
@@ -100,6 +108,7 @@
   @endif
 
   document.getElementById('logout-button').onclick = e => {
+    logoutLoadingShow();
     axios.post('/?logout')
     .then(r => window.location.reload())
     .catch(r => window.location.reload());
