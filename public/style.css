@@ -17,6 +17,10 @@
   white-space: nowrap;
   text-align: center;
 }
+.popup-menu-content * {
+  text-decoration: none;
+  color: black;
+}
 .loading {
   position: fixed;
   top: 0;
