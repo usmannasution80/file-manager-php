@@ -11,13 +11,13 @@ use App\View\Components\FileList;
 
 class RequestController extends Controller{
   public function get(){
-    if(isset($_GET['view']) && Auth::check())
+    if(!Auth::check())
+      return view('auth.login');
+    if(isset($_GET['view']))
       return (new ViewFile())->view_file();
-    if(isset($_GET['list']) && Auth::check())
+    if(isset($_GET['list']))
       return (new FileList())->as_json();
-    if(Auth::check())
-      return view('components.main');
-    return view('auth.login');
+    return view('components.main');
   }
   public function post(){
     if(!Auth::check())
