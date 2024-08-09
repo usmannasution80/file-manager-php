@@ -45,12 +45,18 @@ function strg(key, value){
 
 window.onload = () => {
   (() => {
+    const hideAllPopupMenu = () => {
+      let popupMenuAll = document.getElementsByClassName('popup-menu-content');
+      for(let popupMenu of popupMenuAll)
+        popupMenu.style.display = 'none';
+    };
     let viewportWidth = window.innerWidth;
     let btnShows = document.querySelectorAll('.popup-show');
     if(!btnShows.length)
       return;
     for(let btnShow of btnShows){
       btnShow.onclick = function(e){
+        hideAllPopupMenu();
         let popupMenuContent = this.parentElement.querySelector('.popup-menu-content');
         if(popupMenuContent.style.display === 'block')
           return popupMenuContent.style.display = 'none';
@@ -70,6 +76,6 @@ window.onload = () => {
         contentWrapper.appendChild(li);
       }
     }
-    document.body.onclick = () => document.querySelector('.popup-menu-content').style.display = 'none';
+    document.body.addEventListener('click', hideAllPopupMenu);
   })();
-}
+};
