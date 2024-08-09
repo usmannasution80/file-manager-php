@@ -43,6 +43,12 @@ function strg(key, value){
   }
 };
 
+function getElementUpTo(currentElement, searchParent){
+  do currentElement = currentElement.parentNode;
+  while(currentElement.tagName.toLowerCase() !== searchParent.toLowerCase());
+  return currentElement;
+}
+
 window.onload = () => {
   (() => {
     const hideAllPopupMenu = () => {
