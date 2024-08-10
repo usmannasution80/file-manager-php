@@ -16,6 +16,7 @@
   position: absolute;
   white-space: nowrap;
   text-align: center;
+  z-index: 9999;
 }
 .popup-menu-content * {
   text-decoration: none;
@@ -34,16 +35,20 @@
 .loading .row {
   height: 100vh;
 }
-#file-list-ul > li {
-  overflow: hidden;
-}
-#file-list-ul > li > a {
+#file-list-ul > li a {
   text-decoration: none;
   color: black
 }
 #file-list-ul table {
   border: none;
+  width: 100%;
+  text-align: left;
 }
-#file-list-ul td:nth-child(1){
-  padding-right: 10px;
+#file-list-ul td {
+  overflow: hidden;
+  word-break: break-word;
+}
+#file-list-ul td:nth-child(odd){
+  width: 2em;
+  text-align: center;
 }
