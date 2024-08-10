@@ -65,52 +65,56 @@
 <x-loading loadingName="logoutLoading"/>
 <script>
 
-  let links = document.getElementById('header-links');
-  let linkAnchors = links.getElementsByTagName('a');
-  let isThereAnchorMissing = false;
+  (() => {
+    let links = document.getElementById('header-links');
+    let linkAnchors = links.getElementsByTagName('a');
+    let isThereAnchorMissing = false;
+  
+    while(links.offsetWidth < links.scrollWidth){
+      if(linkAnchors.length === 3)
+        break;
+      let index = Math.floor(linkAnchors.length / 2);
+      linkAnchors[index].nextElementSibling.remove();
+      linkAnchors[index].remove();
+      isThereAnchorMissing = true;
+    }
+  
+    if(isThereAnchorMissing){
+      let index = Math.floor(linkAnchors.length / 2);
+      let span = document.createElement('span');
+      span.innerHTML = '...';
+      span.classList.add('btn');
+      linkAnchors[index].after(span);
+      linkAnchors[index].remove();
+    }
+  
+    @if(!$is_path_file)
+    document.getElementById('upload-button').onclick = e => {
+      uploadLoadingShow();
+      let formData = new FormData();
+      formData.append('file', document.getElementById('file-input').files[0]);
+      axios.post(window.location.href, formData, {headers: {
+        'Content-Type': 'multipart/form-data'
+      }})
+      .then((response) => {
+        uploadLoadingHide();
+        window.location.reload();
+      })
+      .catch((error) => {
+        uploadLoadingHide();
+        alert('Seems like you are not logged in!');
+        window.location.reload();
+      });
+    };
+    @endif
 
-  while(links.offsetWidth < links.scrollWidth){
-    if(linkAnchors.length === 3)
-      break;
-    let index = Math.floor(linkAnchors.length / 2);
-    linkAnchors[index].nextElementSibling.remove();
-    linkAnchors[index].remove();
-    isThereAnchorMissing = true;
-  }
-
-  if(isThereAnchorMissing){
-    let index = Math.floor(linkAnchors.length / 2);
-    let span = document.createElement('span');
-    span.innerHTML = '...';
-    span.classList.add('btn');
-    linkAnchors[index].after(span);
-    linkAnchors[index].remove();
-  }
-
-  @if(!$is_path_file)
-  document.getElementById('upload-button').onclick = e => {
-    uploadLoadingShow();
-    let formData = new FormData();
-    formData.append('file', document.getElementById('file-input').files[0]);
-    axios.post(window.location.href, formData, {headers: {
-      'Content-Type': 'multipart/form-data'
-    }})
-    .then((response) => {
-      uploadLoadingHide();
-      window.location.reload();
-    })
-    .catch((error) => {
-      uploadLoadingHide();
-      alert('Seems like you are not logged in!');
-      window.location.reload();
-    });
-  };
-  @endif
-
-  document.getElementById('logout-button').onclick = e => {
-    logoutLoadingShow();
-    axios.post('/?logout')
-    .then(r => window.location.reload())
-    .catch(r => window.location.reload());
-  }
+    @if(Auth::check())
+    document.getElementById('logout-button').onclick = e => {
+      logoutLoadingShow();
+      axios.post('/?logout')
+      .then(r => window.location.reload())
+      .catch(r => window.location.reload());
+    }
+    @endif
+  })();
 </script>
