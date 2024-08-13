@@ -67,16 +67,18 @@ function sortFileList(files){
   while(isThereChange){
     isThereChange = false;
     for(let i=1; i<length; i++){
-      for(let j=0;j<files[i-1].filename.length;j++){
-        if(j >= files[i].filename.length)
+      let filename1 = files[i-1].filename.toLowerCase();
+      let filename2 = files[i].filename.toLowerCase();
+      for(let j=0;j<filename1.length;j++){
+        if(j >= filename2.length)
           break;
-        if(files[i-1].filename.toLowerCase().charCodeAt(j) > files[i].filename.toLowerCase().charCodeAt(j)){
+        if(filename1.charCodeAt(j) < filename2.charCodeAt(j))
+          break;
+        if(filename1.charCodeAt(j) > filename2.charCodeAt(j)){
           let file = files[i];
           files[i] = files[i-1];
           files[i-1] = file;
           isThereChange = true;
-          break;
-        }else if(files[i-1].filename.toLowerCase().charCodeAt(j) < files[i].filename.toLowerCase().charCodeAt(j)){
           break;
         }
       }
