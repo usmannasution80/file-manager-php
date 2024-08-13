@@ -41,12 +41,53 @@ function strg(key, value){
       }
     }
   }
-};
+}
 
 function getElementUpTo(currentElement, searchParent){
   do currentElement = currentElement.parentNode;
   while(currentElement.tagName.toLowerCase() !== searchParent.toLowerCase());
   return currentElement;
+}
+
+function sortFileList(files){
+  if(!files){
+    let {path, files} = strg('files');
+    let dirs = [];
+    let fls = [];
+    for(let file of files){
+      if(file.type === 'directory')
+        dirs.push(file);
+      else
+        fls.push(file)
+    }
+    return strg('files', {path, files : [...sortFileList(dirs), ...sortFileList(fls)]});
+  }
+  let isThereChange = true;
+  let length = files.length;
+  while(isThereChange){
+    isThereChange = false;
+    for(let i=1; i<length; i++){
+      for(let j=0;j<files[i-1].filename.length;j++){
+        if(j >= files[i].filename.length)
+          break;
+        if(files[i-1].filename.toLowerCase().charCodeAt(j) > files[i].filename.toLowerCase().charCodeAt(j)){
+          let file = files[i];
+          files[i] = files[i-1];
+          files[i-1] = file;
+          isThereChange = true;
+          break;
+        }else if(files[i-1].filename.toLowerCase().charCodeAt(j) < files[i].filename.toLowerCase().charCodeAt(j)){
+          break;
+        }
+      }
+    }
+  }
+  if(strg('sorting-order') === 'desc'){
+    let tempFiles = [...files];
+    for(let i=tempFiles.length-1,j=0;i>=0;i--)
+      files[j++] = tempFiles[i];
+  }
+  return files;
 }
 
 window.onload = () => {
