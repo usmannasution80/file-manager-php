@@ -38,18 +38,52 @@
 <script>
 
   (() => {
+
+    const sortFileList = files => {
+      if(!files){
+        let {path, files} = strg('files');
+        let dirs = [];
+        let fls = [];
+        for(let file of files){
+          if(file.type === 'directory')
+            dirs.push(file);
+          else
+            fls.push(file)
+        }
+        return strg('files', {path, files : [...sortFileList(dirs), ...sortFileList(fls)]});
+      }
+      let isThereChange = true;
+      let length = files.length;
+      while(isThereChange){
+        isThereChange = false;
+        for(let i=1; i<length; i++){
+          for(let j=0;j<files[i-1].filename.length;j++){
+            if(j >= files[i].filename.length)
+              break;
+            if(files[i-1].filename.toLowerCase().charCodeAt(j) > files[i].filename.toLowerCase().charCodeAt(j)){
+              let file = files[i];
+              files[i] = files[i-1];
+              files[i-1] = file;
+              isThereChange = true;
+              break;
+            }else if(files[i-1].filename.toLowerCase().charCodeAt(j) < files[i].filename.toLowerCase().charCodeAt(j)){
+              break;
+            }
+          }
+        }
+      }
+      if(strg('sorting-order') === 'desc'){
+        let tempFiles = [...files];
+        for(let i=tempFiles.length-1,j=0;i>=0;i--)
+          files[j++] = tempFiles[i];
+      }
+      return files;
+    };
+
     let fileListContainer = document.getElementById('file-list-ul');
     let path = (window.location.pathname + '/').replace(/\/+/, '/');
     strg('files', {path, files : {!!json_encode($files)!!}});
-    let dirs = [];
-    let files = [];
-    for(let file of strg('files').files){
-      if(file['type'] === 'directory')
-        dirs.push(file);
-      else
-        files.push(file);
-    }
-    files = strg('files', {path, files : [...dirs, ...files]}).files;
+    let files = sortFileList().files;
     let index = 0;
 
     for(file of files){

@@ -24,6 +24,10 @@
           </button>
         </x-slot:button>
         <x-slot:content>
+          <span data-bs-toggle="modal" data-bs-target="#sorting-option-dialog">
+            <i class="fa-solid fa-arrow-down-a-z"></i>
+            <span>Sorting Options</span>
+          </span>
           @if(!$is_path_file)
             <span data-bs-toggle="modal" data-bs-target="#upload">
               <i class="fa-solid fa-file-arrow-up"></i>
@@ -46,6 +50,21 @@
     </div>
   </div>
 </div>
+<x-dialog id="sorting-option-dialog">
+  <x-slot:title>
+    Sorting Option
+  </x-slot:title>
+  <x-slot:content>
+    <span>Sorting order : </span>
+    <button class="btn-set-order btn">ASC</button>
+    <button class="btn-set-order btn">DESC</button>
+  </x-slot:content>
+  <x-slot:footer>
+    <button class="btn btn-primary" onclick="window.location.reload()">
+      Save
+    </button>
+  </x-slot:footer>
+</x-dialog>
 @if(!$is_path_file)
   <x-dialog id="upload">
     <x-slot:title>
@@ -116,5 +135,21 @@
       .catch(r => window.location.reload());
     }
     @endif
+    let orderSetters = document.getElementsByClassName('btn-set-order');
+    let currentOrder = strg('sorting-order') || 'asc';
+    for(let i=0;i<orderSetters.length;i++){
+      let orderSetter = orderSetters[i];
+      if(orderSetter.innerHTML.toLowerCase() === currentOrder)
+        orderSetter.classList.add('btn-primary');
+      else
+        orderSetter.classList.add('btn-secondary');
+      orderSetter.onclick = e => {
+        strg('sorting-order', e.target.innerHTML.toLowerCase());
+        e.target.classList.remove('btn-secondary');
+        e.target.classList.add('btn-primary');
+        orderSetters[+(i == 0)].classList.remove('btn-primary');
+        orderSetters[+(i == 0)].classList.add('btn-secondary');
+      };
+    }
   })();
 </script>
