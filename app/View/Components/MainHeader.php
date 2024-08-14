@@ -7,11 +7,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class MainHeader extends Component{
-  /**
-   * Create a new component instance.
-   */
+
   public $links;
   public $is_path_file;
+  public $sortingOrderInput;
+  public $saveSortingButton;
 
   public function __construct(){
     $uri = $_SERVER['REQUEST_URI'];
@@ -26,11 +26,10 @@ class MainHeader extends Component{
     }
     $this->links = $links;
     $this->is_path_file = (new ViewFile())->is_file;
+    $this->sortingOrderInput = generate_random_id();
+    $this->saveSortingButton = generate_random_id();
   }
 
-  /**
-   * Get the view / contents that represent the component.
-   */
   public function render(): View|Closure|string{
     return view('components.main-header');
   }

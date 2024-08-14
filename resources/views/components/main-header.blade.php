@@ -55,12 +55,26 @@
     Sorting Option
   </x-slot:title>
   <x-slot:content>
-    <span>Sorting order : </span>
-    <button class="btn-set-order btn">ASC</button>
-    <button class="btn-set-order btn">DESC</button>
+    <div>
+      <span>Sorting Order : </span>
+      <x-form
+        type="radio"
+        buttonLabel="btn-outline-primary"
+        name="{{$sortingOrderInput}}"
+        value="asc"
+        label="ASC"
+        inline/>
+      <x-form
+        type="radio"
+        buttonLabel="btn-outline-primary"
+        name="{{$sortingOrderInput}}"
+        value="desc"
+        label="DESC"
+        inline/>
+    </div>
   </x-slot:content>
   <x-slot:footer>
-    <button class="btn btn-primary" onclick="window.location.reload()">
+    <button class="btn btn-primary" id="{{$saveSortingButton}}">
       Save
     </button>
   </x-slot:footer>
@@ -135,21 +149,19 @@
       .catch(r => window.location.reload());
     }
     @endif
-    let orderSetters = document.getElementsByClassName('btn-set-order');
-    let currentOrder = strg('sorting-order') || 'asc';
-    for(let i=0;i<orderSetters.length;i++){
-      let orderSetter = orderSetters[i];
-      if(orderSetter.innerHTML.toLowerCase() === currentOrder)
-        orderSetter.classList.add('btn-primary');
-      else
-        orderSetter.classList.add('btn-secondary');
-      orderSetter.onclick = e => {
-        strg('sorting-order', e.target.innerHTML.toLowerCase());
-        e.target.classList.remove('btn-secondary');
-        e.target.classList.add('btn-primary');
-        orderSetters[+(i == 0)].classList.remove('btn-primary');
-        orderSetters[+(i == 0)].classList.add('btn-secondary');
-      };
-    }
+    document.getElementById('{{$saveSortingButton}}').onclick = e => {
+      let sortingOrderInputs = document.querySelectorAll('input[name={{$sortingOrderInput}}]');
+      for(let input of sortingOrderInputs){
+        if(input.checked){
+          strg('sorting-order', input.value);
+          window.location.reload();
+        }
+      }
+    };
+    document.getElementById('sorting-option-dialog').addEventListener('show.bs.modal', e => {
+      let sortingOrderInputs = document.querySelectorAll('input[name={{$sortingOrderInput}}]');
+      for(let input of sortingOrderInputs)
+        input.checked = input.value === (strg('sorting-order') || 'asc');
+    });
   })();
 </script>
