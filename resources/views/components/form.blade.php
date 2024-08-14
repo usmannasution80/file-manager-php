@@ -1,4 +1,6 @@
+@if(!$buttonLabel)
 <div class="{{$containerClass}}">
+@endif
   @if($isCheck)
     <input
       type="{{$type}}"
@@ -23,4 +25,6 @@
       id="{{$inputId}}"
       name="{{$name}}"/>
   @endif
+@if(!$buttonLabel)
 </div>
+@endif

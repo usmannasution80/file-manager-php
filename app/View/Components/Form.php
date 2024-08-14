@@ -42,7 +42,7 @@ class Form extends Component{
     $this->inputId = $inputId;
     $this->isCheck = $type == 'checkbox' || $type == 'radio';
     $this->inputId = $inputId ? $inputId : generate_random_id();
-    $this->buttonLabel = $buttonLabel;
+    $this->buttonLabel = $buttonLabel ? 'btn ' . $buttonLabel : null;
     $this->name = $name;
     $this->containerClass = $containerClass;
     $this->inline = $inline;
@@ -63,9 +63,9 @@ class Form extends Component{
         $this->containerClass .= ' form-check';
         $this->inputClass = 'form-check-input';
         $this->labelClass = 'form-check-label';
+        if($this->inline)
+          $this->containerClass .= ' form-check-inline';
       }
-      if($this->inline)
-        $this->containerClass .= ' form-check-inline';
     }else{
       $this->containerClass .= ' form-group';
       $this->inputClass = 'form-control';
