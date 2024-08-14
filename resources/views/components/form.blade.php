@@ -1,20 +1,26 @@
-<div class="form-{{$is_check ? 'check' : 'group'}}">
-  @if($is_check)
+<div class="{{$containerClass}}">
+  @if($isCheck)
     <input
       type="{{$type}}"
-      class="form-check"
+      class="{{$inputClass}}"
       value="{{$value}}"
-      id="{{$input_id}}"/>
+      id="{{$inputId}}"
+      name="{{$name}}"/>
   @endif
   @if(isset($label))
-    <label>{{$label}}</label>
+    <label
+      class="{{$labelClass}}"
+      for="{{$inputId}}">
+      {{$label}}
+    </label>
   @endif
-  @if(!$is_check)
+  @if(!$isCheck)
     <input
       type="{{$type}}"
-      class="form-control{{$type === 'file' ? '-file' : ''}}"
+      class="{{$inputClass}}"
       value="{{$value}}"
       placeholder="{{$placeholder}}"
-      id="{{$input_id}}"/>
+      id="{{$inputId}}"
+      name="{{$name}}"/>
   @endif
 </div>
