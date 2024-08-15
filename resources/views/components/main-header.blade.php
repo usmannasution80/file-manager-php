@@ -1,21 +1,6 @@
 <div id="header" class="card-header container">
   <div class="row align-items-center">
-    <div class="col" id="header-links">
-      @foreach($links as $link)
-        <a href="{{$link}}">
-          @if($loop->first)
-            <i class="fa-solid fa-house"></i>
-          @else
-            <b>
-              {{preg_replace('/^.*\\//i', '', urldecode($link))}}
-            </b>
-          @endif
-        </a>
-        @if(!$loop->last)
-          <i class="fa-solid fa-chevron-right"></i>
-        @endif
-      @endforeach
-    </div>
+    <div class="col" id="header-links"></div>
     <div id="header-setting-button">
       <x-popup-menu>
         <x-slot:button>
@@ -99,10 +84,33 @@
 <script>
 
   (() => {
-    let links = document.getElementById('header-links');
+    let links = window.location.pathname.replace(/^\/+/, '/').replace(/\/+$/, '').replaceAll(/\/+/g, '/').split('/');
+    let linksElements = '';
+    for(let i=0;i<links.length;i++){
+      if(i > 0){
+        links[i] = links[i-1] + '/' + links[i];
+        linksElements += `
+          <a href="${links[i]}">
+            <b>
+              ${decodeURIComponent(links[i].replace(/^.*\//, ''))}
+            </b>
+          </a>
+        `;
+      }else{
+        linksElements += `
+          <a href="/">
+            <i class="fa-solid fa-house"></i>
+          </a>
+        `;
+      }
+      if(i < links.length-1 && links.length > 1)
+        linksElements += '<i class="fa-solid fa-chevron-right"></i>';
+    }
+    document.getElementById('header-links').innerHTML = linksElements;
+    links = document.getElementById('header-links');
     let linkAnchors = links.getElementsByTagName('a');
     let isThereAnchorMissing = false;
-  
+
     while(links.offsetWidth < links.scrollWidth){
       if(linkAnchors.length === 3)
         break;
@@ -111,7 +119,7 @@
       linkAnchors[index].remove();
       isThereAnchorMissing = true;
     }
-  
+
     if(isThereAnchorMissing){
       let index = Math.floor(linkAnchors.length / 2);
       let span = document.createElement('span');
@@ -120,7 +128,7 @@
       linkAnchors[index].after(span);
       linkAnchors[index].remove();
     }
-  
+
     @if(!$is_path_file)
     document.getElementById('{{$uploadButton}}').onclick = e => {
       uploadLoadingShow();
