@@ -47,7 +47,11 @@ class ViewFile extends Component{
 
   public function view_file(){
     header('Content-Dispotition: inline');
+    header('Content-Transfer-Encoding: binary');
     header('Content-Type: ' . $this->file_info['type']);
+    header('Content-Length: '.filesize($this->path));
+    header('Accept-Ranges: 0-' . (filesize($this->path) -1));
+    header('Accept-Ranges: bytes');
     return readfile($this->path);
   }
 
