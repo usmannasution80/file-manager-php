@@ -12,6 +12,11 @@ class MainHeader extends Component{
   public $is_path_file;
   public $sortingOrderInput;
   public $saveSortingButton;
+  public $sortingOptionDialog;
+  public $uploadDialog;
+  public $fileInput;
+  public $uploadButton;
+  public $logoutButton;
 
   public function __construct(){
     $uri = $_SERVER['REQUEST_URI'];
@@ -28,6 +33,11 @@ class MainHeader extends Component{
     $this->is_path_file = (new ViewFile())->is_file;
     $this->sortingOrderInput = generate_random_id();
     $this->saveSortingButton = generate_random_id();
+    $this->sortingOptionDialog = generate_random_id();
+    $this->uploadDialog = generate_random_id();
+    $this->fileInput = generate_random_id();
+    $this->uploadButton = generate_random_id();
+    $this->logoutButton = generate_random_id();
   }
 
   public function render(): View|Closure|string{

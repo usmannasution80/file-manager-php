@@ -24,18 +24,18 @@
           </button>
         </x-slot:button>
         <x-slot:content>
-          <span data-bs-toggle="modal" data-bs-target="#sorting-option-dialog">
+          <span data-bs-toggle="modal" data-bs-target="#{{$sortingOptionDialog}}">
             <i class="fa-solid fa-arrow-down-a-z"></i>
             <span>Sorting Options</span>
           </span>
           @if(!$is_path_file)
-            <span data-bs-toggle="modal" data-bs-target="#upload">
+            <span data-bs-toggle="modal" data-bs-target="#{{$uploadDialog}}">
               <i class="fa-solid fa-file-arrow-up"></i>
               <span>Upload</span>
             </span>
           @endif
           @if(Auth::check())
-            <span id="logout-button">
+            <span id="{{$logoutButton}}">
               <i class="fa-solid fa-right-from-bracket"></i>
               <span>Logout</span>
             </span>
@@ -50,7 +50,7 @@
     </div>
   </div>
 </div>
-<x-dialog id="sorting-option-dialog">
+<x-dialog id="{{$sortingOptionDialog}}">
   <x-slot:title>
     Sorting Option
   </x-slot:title>
@@ -80,15 +80,15 @@
   </x-slot:footer>
 </x-dialog>
 @if(!$is_path_file)
-  <x-dialog id="upload">
+  <x-dialog id="{{$uploadDialog}}">
     <x-slot:title>
       Upload File
     </x-slot:title>
     <x-slot:content>
-      <x-form type="file" input-id="file-input"/>
+      <x-form type="file" input-id="{{$fileInput}}"/>
     </x-slot:content>
     <x-slot:footer>
-      <button id="upload-button" class="btn btn-primary">
+      <button id="{{$uploadButton}}" class="btn btn-primary">
         Upload
       </button>
     </x-slot:footer>
@@ -122,10 +122,10 @@
     }
   
     @if(!$is_path_file)
-    document.getElementById('upload-button').onclick = e => {
+    document.getElementById('{{$uploadButton}}').onclick = e => {
       uploadLoadingShow();
       let formData = new FormData();
-      formData.append('file', document.getElementById('file-input').files[0]);
+      formData.append('file', document.getElementById('{{$fileInput}}').files[0]);
       axios.post(window.location.href, formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }})
@@ -142,7 +142,7 @@
     @endif
 
     @if(Auth::check())
-    document.getElementById('logout-button').onclick = e => {
+    document.getElementById('{{$logoutButton}}').onclick = e => {
       logoutLoadingShow();
       axios.post('/?logout')
       .then(r => window.location.reload())
@@ -158,7 +158,7 @@
         }
       }
     };
-    document.getElementById('sorting-option-dialog').addEventListener('show.bs.modal', e => {
+    document.getElementById('{{$sortingOptionDialog}}').addEventListener('show.bs.modal', e => {
       let sortingOrderInputs = document.querySelectorAll('input[name={{$sortingOrderInput}}]');
       for(let input of sortingOrderInputs)
         input.checked = input.value === (strg('sorting-order') || 'asc');
