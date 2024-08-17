@@ -52,7 +52,14 @@ class ViewFile extends Component{
     header('Content-Length: '.filesize($this->path));
     header('Accept-Ranges: 0-' . (filesize($this->path) -1));
     header('Accept-Ranges: bytes');
-    return readfile($this->path);
+    ob_clean();
+    flush();
+    $file = fopen($this->path, 'rb');
+    while($chunk = fread($file, 8192)){
+      echo $chunk;
+      flush();
+    }
+    fclose($file);
   }
 
 }
