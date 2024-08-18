@@ -20,6 +20,7 @@ class Form extends Component{
   public $buttonLabel;
   public $name;
   public $inline;
+  public $options;
 
   public function __construct(
 
@@ -32,6 +33,7 @@ class Form extends Component{
     $name = null,
     $containerClass = '',
     $inline = false,
+    $options = []
 
   ){
 
@@ -46,6 +48,7 @@ class Form extends Component{
     $this->name = $name;
     $this->containerClass = $containerClass;
     $this->inline = $inline;
+    $this->options = $options;
     $this->setElementsClasses();
 
   }
