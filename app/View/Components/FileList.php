@@ -26,8 +26,6 @@ class FileList extends ViewFile {
       $type = mime_content_type($this->path . '/' . $file);
       if(!$type)
         $type = '?';
-      else
-        $type = preg_replace('/\\/.*$/i', '', $type);
       array_push($this->files, [
         'filename' => $file,
         'type' => $type,

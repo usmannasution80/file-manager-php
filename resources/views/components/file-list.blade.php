@@ -47,7 +47,7 @@
 
     for(file of files){
       let icon;
-      switch(file['type']){
+      switch(file['type'].replace(/\/.*$/, '')){
         case 'directory':
           icon = 'fa-regular fa-folder';
           break;
