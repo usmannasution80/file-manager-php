@@ -20,14 +20,21 @@ class FileList extends ViewFile {
   }
 
   public function set_files(){
+    set_error_handler(function(){});
     $files = scandir($this->path);
     foreach($files as $file){
+      $type = mime_content_type($this->path . '/' . $file);
+      if(!$type)
+        $type = '?';
+      else
+        $type = preg_replace('/\\/.*$/i', '', $type);
       array_push($this->files, [
         'filename' => $file,
-        'type' => preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file)),
+        'type' => $type,
         'date' => filemtime($this->path . '/' . $file)
       ]);
     }
+    restore_error_handler();
   }
 
   public function as_json(){

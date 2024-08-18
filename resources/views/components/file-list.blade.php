@@ -60,6 +60,9 @@
         case 'picture':
           icon = 'fa-solid fa-file-image';
           break;
+        case '?':
+          icon = 'fa-solid fa-file-circle-question';
+          break;
         default:
           icon = 'fa-regular fa-file';
       }
