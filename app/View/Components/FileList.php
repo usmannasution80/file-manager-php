@@ -24,7 +24,8 @@ class FileList extends ViewFile {
     foreach($files as $file){
       array_push($this->files, [
         'filename' => $file,
-        'type' => preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file))
+        'type' => preg_replace('/\\/.*$/i', '', mime_content_type($this->path . '/' . $file)),
+        'date' => filemtime($this->path . '/' . $file)
       ]);
     }
   }

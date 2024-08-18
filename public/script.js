@@ -62,27 +62,38 @@ function sortFileList(files){
     }
     return strg('files', {path, files : [...sortFileList(dirs), ...sortFileList(fls)]});
   }
+  const compareByName = (file1, file2) => {
+    let filename1 = file2.filename.toLowerCase();
+    let filename2 = file2.filename.toLowerCase();
+    for(let i=0;i<filename1.length;i++){
+      if(i >= filename2.length)
+        return [file1, file2];
+      if(filename1.charCodeAt(i) < filename2.charCodeAt(i))
+        return [file1, file2];
+      if(filename1.charCodeAt(i) > filename2.charCodeAt(i))
+        return [file2, file1, true];
+    }
+    return [file1, file2];
+  };
+  const compareByDate = (file1, file2) => {
+    if(file1.date > file2.date)
+      return [file2, file1, true];
+    return [file1, file2];
+  };
+  const compare = (file1, file2) => {
+    switch(strg('sort-by')){
+      case 'date':
+        return compareByDate(file1, file2);
+      default:
+        return compareByName(file1, file2);
+    }
+  };
   let isThereChange = true;
   let length = files.length;
   while(isThereChange){
     isThereChange = false;
-    for(let i=1; i<length; i++){
-      let filename1 = files[i-1].filename.toLowerCase();
-      let filename2 = files[i].filename.toLowerCase();
-      for(let j=0;j<filename1.length;j++){
-        if(j >= filename2.length)
-          break;
-        if(filename1.charCodeAt(j) < filename2.charCodeAt(j))
-          break;
-        if(filename1.charCodeAt(j) > filename2.charCodeAt(j)){
-          let file = files[i];
-          files[i] = files[i-1];
-          files[i-1] = file;
-          isThereChange = true;
-          break;
-        }
-      }
-    }
+    for(let i=1; i<length; i++)
+      [files[i-1], files[i], isThereChange = isThereChange] = compare(files[i-1], files[i]);
   }
   if(strg('sorting-order') === 'desc'){
     let tempFiles = [...files];

@@ -40,6 +40,19 @@
     Sorting Option
   </x-slot:title>
   <x-slot:content>
+    <table border="0" class="w-100 mb-1">
+      <tr>
+        <td style="max-width:2em">
+          Sort by :
+        </td>
+        <td>
+          <x-form
+            type="select"
+            :options="$sortByOptions"
+            name="{{$selectSortBy}}"/>
+        </td>
+      </tr>
+    </table>
     <div>
       <span>Sorting Order : </span>
       <x-form
@@ -165,11 +178,13 @@
           window.location.reload();
         }
       }
+      strg('sort-by', document.querySelector('select[name="{{$selectSortBy}}"]').value);
     };
     document.getElementById('{{$sortingOptionDialog}}').addEventListener('show.bs.modal', e => {
       let sortingOrderInputs = document.querySelectorAll('input[name={{$sortingOrderInput}}]');
       for(let input of sortingOrderInputs)
         input.checked = input.value === (strg('sorting-order') || 'asc');
+      document.querySelector('select[name="{{$selectSortBy}}"]').value = strg('sort-by') || 'name';
     });
   })();
 </script>

@@ -16,6 +16,8 @@ class MainHeader extends Component{
   public $fileInput;
   public $uploadButton;
   public $logoutButton;
+  public $selectSortBy;
+  public $sortByOptions;
 
   public function __construct(){
     $this->is_path_file = (new ViewFile())->is_file;
@@ -26,6 +28,11 @@ class MainHeader extends Component{
     $this->fileInput = generate_random_id();
     $this->uploadButton = generate_random_id();
     $this->logoutButton = generate_random_id();
+    $this->selectSortBy = generate_random_id();
+    $this->sortByOptions = [
+      'name' => 'Name',
+      'date' => 'Date'
+    ];
   }
 
   public function render(): View|Closure|string{
