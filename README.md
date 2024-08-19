@@ -1,1 +1,20 @@
-The app under development ...
+# File Manager PHP
+### Requirements :
+- PHP >= 8.2
+- MySQL (Optional)
+### How to Run
+- Open your command line or terminal
+- Navigate to File Manager PHP directory
+- Rename __.env.example__ to __.env__
+- Run `php artisan serve`
+### Delete and Rename
+If you want to use delete and rename functionality, you should have MySQL installed on your device.
+
+If you already have MySQL installed, you should edit __.env__ file at the MySQL section correspond to your MySQL.
+
+And then, you should run command `php artisan migrate` from your command line at __File Manager PHP__ directory.
+
+### Create Admin
+If you already setup your database based on above section, you can create admin that can do upload, delete, and rename files.
+
+Navigate to your __File Manager PHP__ and run `php artisan create_admin username user@email password` (change username, user@email and password as you want).
