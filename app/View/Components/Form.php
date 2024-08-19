@@ -21,6 +21,7 @@ class Form extends Component{
   public $name;
   public $inline;
   public $options;
+  public $switch;
 
   public function __construct(
 
@@ -33,7 +34,8 @@ class Form extends Component{
     $name = null,
     $containerClass = '',
     $inline = false,
-    $options = []
+    $options = [],
+    $switch = false
 
   ){
 
@@ -49,6 +51,7 @@ class Form extends Component{
     $this->containerClass = $containerClass;
     $this->inline = $inline;
     $this->options = $options;
+    $this->switch = $switch;
     $this->setElementsClasses();
 
   }
@@ -64,6 +67,8 @@ class Form extends Component{
         $this->labelClass = $this->buttonLabel;
       }else{
         $this->containerClass .= ' form-check';
+        if($this->switch)
+          $this->containerClass .= ' form-switch';
         $this->inputClass = 'form-check-input';
         $this->labelClass = 'form-check-label';
         if($this->inline)

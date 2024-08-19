@@ -8,7 +8,8 @@
         class="{{$inputClass}}"
         value="{{$value}}"
         id="{{$inputId}}"
-        name="{{$name}}"/>
+        name="{{$name}}"
+        role="{{$switch ? 'switch' : ''}}"/>
     @endif
     @if(isset($label))
       <label
