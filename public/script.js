@@ -1,3 +1,5 @@
+var setFileList = () => 1;
+
 function strg(key, value){
   if(arguments.length === 2){
     for(let i=0;i<localStorage.length;i++){

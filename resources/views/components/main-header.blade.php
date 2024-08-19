@@ -72,7 +72,7 @@
     </div>
   </x-slot:content>
   <x-slot:footer>
-    <button class="btn btn-primary" id="{{$saveSortingButton}}">
+    <button class="btn btn-primary" id="{{$saveSortingButton}}" data-bs-dismiss="modal">
       Save
     </button>
   </x-slot:footer>
@@ -175,10 +175,11 @@
       for(let input of sortingOrderInputs){
         if(input.checked){
           strg('sorting-order', input.value);
-          window.location.reload();
+          break;
         }
       }
       strg('sort-by', document.querySelector('select[name="{{$selectSortBy}}"]').value);
+      setFileList();
     };
     document.getElementById('{{$sortingOptionDialog}}').addEventListener('show.bs.modal', e => {
       let sortingOrderInputs = document.querySelectorAll('input[name={{$sortingOrderInput}}]');

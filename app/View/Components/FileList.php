@@ -11,12 +11,12 @@ class FileList extends ViewFile {
 
   public $files = [];
 
-  public function __construct($path = null){
+  public function __construct($set_files = false, $path = null){
 
     parent::__construct($path);
-
-    if(!$this->is_file)
+    if($set_files)
       $this->set_files();
+
   }
 
   public function set_files(){

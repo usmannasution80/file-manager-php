@@ -16,7 +16,7 @@ class RequestController extends Controller{
     if(isset($_GET['view']))
       return (new ViewFile())->view_file();
     if(isset($_GET['list']))
-      return (new FileList())->as_json();
+      return (new FileList(true))->as_json();
     return view('components.main');
   }
   public function post(){

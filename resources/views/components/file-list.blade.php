@@ -33,76 +33,85 @@
     <button class="btn btn-danger" id="delete-button">Delete</button>
   </x-slot:footer>
 </x-dialog>
+<x-loading loadingName="fetchListLoading"/>
 <x-loading loadingName="renameLoading"/>
 <x-loading loadingName="deleteLoading"/>
 <script>
 
-  (() => {
+  fetchListLoadingShow();
 
-    let fileListContainer = document.getElementById('file-list-ul');
+  axios(window.location.pathname + '?list')
+  .then(r => {
     let path = (window.location.pathname + '/').replace(/\/+/, '/');
-    strg('files', {path, files : {!!json_encode($files)!!}});
-    let files = sortFileList().files;
-    let index = 0;
+    strg('files', {path, files : r.data});
+    let fileListContainer = document.getElementById('file-list-ul');
+    let files;
 
-    for(file of files){
-      let icon;
-      switch(file['type'].replace(/\/.*$/, '')){
-        case 'directory':
-          icon = 'fa-regular fa-folder';
-          break;
-        case 'video':
-          icon = 'fa-solid fa-file-video';
-          break;
-        case 'audio':
-          icon = 'fa-solid fa-file-audio';
-          break;
-        case 'picture':
-          icon = 'fa-solid fa-file-image';
-          break;
-        case '?':
-          icon = 'fa-solid fa-file-circle-question';
-          break;
-        default:
-          icon = 'fa-regular fa-file';
+    setFileList = () => {
+      fileListContainer.innerHTML = '';
+      files = sortFileList().files;
+      let index = 0;
+      for(file of files){
+        let icon;
+        switch(file['type'].replace(/\/.*$/, '')){
+          case 'directory':
+            icon = 'fa-regular fa-folder';
+            break;
+          case 'video':
+            icon = 'fa-solid fa-file-video';
+            break;
+          case 'audio':
+            icon = 'fa-solid fa-file-audio';
+            break;
+          case 'picture':
+            icon = 'fa-solid fa-file-image';
+            break;
+          case '?':
+            icon = 'fa-solid fa-file-circle-question';
+            break;
+          default:
+            icon = 'fa-regular fa-file';
+        }
+  
+        let url = path + encodeURIComponent(file['filename']);
+  
+        fileListContainer.innerHTML += `
+          <li class="list-group-item" index="${index++}">
+            <table>
+              <tr>
+                <td>
+                  <i class="${icon}"></icon>
+                </td>
+                <td>
+                  <a href="${url}">
+                    <span>${file['filename']}</span>
+                  </a>
+                </td>
+                <td>
+                  <x-popup-menu>
+                    <x-slot:button>
+                      <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </x-slot:button>
+                    <x-slot:content>
+                      <span data-bs-toggle="modal" data-bs-target="#delete-modal">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>Delete</span>
+                      </span>
+                      <span data-bs-toggle="modal" data-bs-target="#rename-modal">
+                        <i class="fa-solid fa-pen"></i>
+                        <span>Rename</span>
+                      </span>
+                    </x-slot:content>
+                  </x-popup-menu>
+                </td>
+              </tr>
+            </table>
+          </li>
+        `;
       }
-
-      let url = path + encodeURIComponent(file['filename']);
-
-      fileListContainer.innerHTML += `
-        <li class="list-group-item" index="${index++}">
-          <table>
-            <tr>
-              <td>
-                <i class="${icon}"></icon>
-              </td>
-              <td>
-                <a href="${url}">
-                  <span>${file['filename']}</span>
-                </a>
-              </td>
-              <td>
-                <x-popup-menu>
-                  <x-slot:button>
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                  </x-slot:button>
-                  <x-slot:content>
-                    <span data-bs-toggle="modal" data-bs-target="#delete-modal">
-                      <i class="fa-solid fa-trash-can"></i>
-                      <span>Delete</span>
-                    </span>
-                    <span data-bs-toggle="modal" data-bs-target="#rename-modal">
-                      <i class="fa-solid fa-pen"></i>
-                      <span>Rename</span>
-                    </span>
-                  </x-slot:content>
-                </x-popup-menu>
-              </td>
-            </tr>
-          </table>
-        </li>
-      `;
-    }
+    };
+    setFileList();
+    fetchListLoadingHide();
 
     let editIndex;
 
@@ -152,6 +161,6 @@
       });
     };
 
-  })();
+  }).catch(e => console.log(e));
 </script>
 @endif
