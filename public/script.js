@@ -47,8 +47,23 @@ function strg(key, value){
 }
 
 function getElementUpTo(currentElement, searchParent){
-  do currentElement = currentElement.parentNode;
-  while(currentElement.tagName.toLowerCase() !== searchParent.toLowerCase());
+  let attributeKey, attributeValue;
+  attributeValue = searchParent.replace(/^[^\[]*\[|\][^\]]*$|'|"/g, '');
+  [attributeKey, attributeValue] = attributeValue.split('=');
+  searchParent = searchParent.replace(/\[.*/, '').toLowerCase();
+  while(true){
+    currentElement = currentElement.parentNode;
+    if(!currentElement.tagName)
+      break;
+    if(searchParent)
+      if(searchParent !== currentElement.tagName.toLowerCase())
+        continue;
+    if(attributeKey === 'class')
+      if(currentElement.classList.contains(attributeValue))
+        break;
+    if(currentElement.getAttribute(attributeKey) === attributeValue)
+      break;
+  }
   return currentElement;
 }
 
