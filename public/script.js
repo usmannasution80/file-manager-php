@@ -122,38 +122,34 @@ function sortFileList(files){
 }
 
 window.onload = () => {
-  (() => {
-    const hideAllPopupMenu = () => {
-      let popupMenuAll = document.getElementsByClassName('popup-menu-content');
-      for(let popupMenu of popupMenuAll)
-        popupMenu.style.display = 'none';
-    };
-    let viewportWidth = window.innerWidth;
-    let btnShows = document.querySelectorAll('.popup-show');
-    if(!btnShows.length)
+  document.body.addEventListener('click', e => {
+    let popupMenuAll = document.getElementsByClassName('popup-menu-content');
+    for(let popupMenu of popupMenuAll)
+      popupMenu.style.display = 'none';
+    let btnShow = getElementUpTo(e.target, '[class="popup-show"]');
+    if(!btnShow)
+      btnShow = e.target.querySelector('.popup-show');
+    if(!btnShow)
       return;
-    for(let btnShow of btnShows){
-      btnShow.onclick = function(e){
-        hideAllPopupMenu();
-        let popupMenuContent = this.parentElement.querySelector('.popup-menu-content');
-        if(popupMenuContent.style.display === 'block')
-          return popupMenuContent.style.display = 'none';
-        popupMenuContent.style.display = 'block';
-        let rect = popupMenuContent.getBoundingClientRect();
-        let widthOnViewport = rect.left + popupMenuContent.offsetWidth;
-        if(widthOnViewport > viewportWidth)
-          popupMenuContent.style.right = 0;
-        e.stopPropagation();
-      }
-      contents = btnShow.parentElement.querySelectorAll('.popup-menu-content > ul > *');
-      let contentWrapper = btnShow.parentElement.querySelector('.popup-menu-content > ul');
-      for(let content of contents){
-        let li = document.createElement('li');
-        li.classList.add('list-group-item');
-        li.appendChild(content);
-        contentWrapper.appendChild(li);
-      }
+    let viewportWidth = window.innerWidth;
+    let popupMenuContent = btnShow.parentElement.querySelector('.popup-menu-content');
+    if(popupMenuContent.style.display === 'block')
+      return popupMenuContent.style.display = 'none';
+    popupMenuContent.style.display = 'block';
+    let rect = popupMenuContent.getBoundingClientRect();
+    let widthOnViewport = rect.left + popupMenuContent.offsetWidth;
+    if(widthOnViewport > viewportWidth)
+      popupMenuContent.style.right = 0;
+    e.stopPropagation();
+    if(btnShow.parentElement.querySelector('.list-group-item'))
+      return;
+    let contents = btnShow.parentElement.querySelectorAll('.popup-menu-content > ul > *');
+    let contentWrapper = btnShow.parentElement.querySelector('.popup-menu-content > ul');
+    for(let content of contents){
+      let li = document.createElement('li');
+      li.classList.add('list-group-item');
+      li.appendChild(content);
+      contentWrapper.appendChild(li);
     }
-    document.body.addEventListener('click', hideAllPopupMenu);
-  })();
+  });
 };
