@@ -48,7 +48,7 @@ function strg(key, value){
 
 function getElementUpTo(currentElement, searchParent){
   let attributeKey, attributeValue;
-  attributeValue = searchParent.replace(/^[^\[]*\[|\][^\]]*$|'|"/g, '');
+  attributeValue = searchParent.replace(/^[^\[]*\[?|\][^\]]*$|'|"/g, '');
   [attributeKey, attributeValue] = attributeValue.split('=');
   searchParent = searchParent.replace(/\[.*/, '').toLowerCase();
   while(true){
@@ -58,6 +58,8 @@ function getElementUpTo(currentElement, searchParent){
     if(searchParent)
       if(searchParent !== currentElement.tagName.toLowerCase())
         continue;
+      else if(!attributeKey)
+        break;
     if(attributeKey === 'class')
       if(currentElement.classList.contains(attributeValue))
         break;
