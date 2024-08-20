@@ -30,6 +30,10 @@
               <span>Login</span>
             </a>
           @endif
+          <span data-bs-toggle="modal" data-bs-target="#{{$settingDialog}}">
+            <i class="fa-solid fa-gear"></i>
+            <span>Setting</span>
+          </span>
         </x-slot:content>
       </x-popup-menu>
     </div>
@@ -77,6 +81,7 @@
     </button>
   </x-slot:footer>
 </x-dialog>
+<x-setting-dialog id="{{$settingDialog}}"/>
 @if(!$is_path_file)
   <x-dialog id="{{$uploadDialog}}">
     <x-slot:title>

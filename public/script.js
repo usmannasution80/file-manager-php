@@ -1,3 +1,4 @@
+// definition of setFileList is inside FileList component
 var setFileList = () => 1;
 
 function strg(key, value){

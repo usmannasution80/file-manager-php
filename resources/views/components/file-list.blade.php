@@ -50,8 +50,14 @@
     setFileList = () => {
       fileListContainer.innerHTML = '';
       files = sortFileList().files;
+      const settings = strg('settings') || {};
       let index = 0;
+      if(settings.show_double_point)
+        files.unshift({filename : '..', type : 'directory', date : 0});
       for(file of files){
+        if(!settings.show_start_with_point)
+          if(/^\./.test(file.filename))
+            continue;
         let icon;
         switch(file['type'].replace(/\/.*$/, '')){
           case 'directory':
