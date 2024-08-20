@@ -54,7 +54,7 @@ function getElementUpTo(currentElement, searchParent){
   while(true){
     currentElement = currentElement.parentNode;
     if(!currentElement.tagName)
-      break;
+      return null;
     if(searchParent)
       if(searchParent !== currentElement.tagName.toLowerCase())
         continue;
