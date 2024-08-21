@@ -51,10 +51,11 @@
       fileListContainer.innerHTML = '';
       files = sortFileList().files;
       const settings = strg('settings') || {};
-      let index = 0;
       if(settings.show_double_point)
         files.unshift({filename : '..', type : 'directory', date : 0});
-      for(file of files){
+      let len = files.length;
+      for(let index=0;index<len;index++){
+        let file = files[index];
         if(!settings.show_start_with_point)
           if(/^\./.test(file.filename))
             continue;
@@ -82,7 +83,7 @@
         let url = path + encodeURIComponent(file['filename']);
   
         fileListContainer.innerHTML += `
-          <li class="list-group-item" index="${index++}">
+          <li class="list-group-item" index="${index}">
             <table>
               <tr>
                 <td>
@@ -115,57 +116,64 @@
           </li>
         `;
       }
+
+      fetchListLoadingHide();
+
+      let editIndex;
+  
+      let deleteModalTogglers = fileListContainer.querySelectorAll('[data-bs-target="#delete-modal"]');
+      for(let deleteModalToggler of deleteModalTogglers){
+        deleteModalToggler.onclick = e => {
+          let index = getElementUpTo(getElementUpTo(e.target, 'li'), 'li').getAttribute('index');
+          document.getElementById('filename-to-delete').innerHTML = files[index].filename;
+          editIndex = index;
+        };
+      }
+  
+      let renameModalTogglers = fileListContainer.querySelectorAll('[data-bs-target="#rename-modal"]');
+      for(let renameModalToggler of renameModalTogglers){
+        renameModalToggler.onclick = e => {
+          let index = getElementUpTo(getElementUpTo(e.target, 'li'), 'li').getAttribute('index');
+          document.getElementById('current-filename').innerHTML = files[index].filename;
+          editIndex = index;
+        };
+      }
+  
+      document.getElementById('delete-button').onclick = e => {
+        if(files[editIndex].filename === '..')
+          return alert('Yout can\'t edit this file');
+        deleteLoadingShow();
+        axios.post(path + encodeURIComponent(files[editIndex].filename) + '?delete')
+        .then(r => {
+          alert('File deleted');
+          window.location.reload();
+        })
+        .catch(err => {
+          alert('You should login first!');
+          deleteLoadingHide();
+        });
+      };
+  
+      document.getElementById('rename-button').onclick = e => {
+        if(files[editIndex].filename === '..')
+          return alert('You can\'t edit this file');
+        renameLoadingShow();
+        axios.post(path + encodeURIComponent(
+          files[editIndex].filename) + '?rename',
+          'filename=' + encodeURIComponent(document.getElementById('rename-input').value)
+        ).then(r => {
+          alert('File name changed');
+          window.location.reload();
+        })
+        .catch(err => {
+          alert('You should login first!');
+          renameLoadingHide();
+        });
+      };
+
     };
+
     setFileList();
-    fetchListLoadingHide();
-
-    let editIndex;
-
-    let deleteModalTogglers = fileListContainer.querySelectorAll('[data-bs-target="#delete-modal"]');
-    for(let deleteModalToggler of deleteModalTogglers){
-      deleteModalToggler.onclick = e => {
-        let index = getElementUpTo(e.target.parentNode.parentNode, 'li').getAttribute('index');
-        document.getElementById('filename-to-delete').innerHTML = files[index].filename;
-        editIndex = index;
-      };
-    }
-
-    let renameModalTogglers = fileListContainer.querySelectorAll('[data-bs-target="#rename-modal"]');
-    for(let renameModalToggler of renameModalTogglers){
-      renameModalToggler.onclick = e => {
-        let index = getElementUpTo(e.target.parentNode.parentNode, 'li').getAttribute('index');
-        document.getElementById('current-filename').innerHTML = files[index].filename;
-        editIndex = index;
-      };
-    }
-
-    document.getElementById('delete-button').onclick = e => {
-      deleteLoadingShow();
-      axios.post(path + encodeURIComponent(files[editIndex].filename) + '?delete')
-      .then(r => {
-        alert('File deleted');
-        window.location.reload();
-      })
-      .catch(err => {
-        alert('You should login first!');
-        deleteLoadingHide();
-      });
-    };
-
-    document.getElementById('rename-button').onclick = e => {
-      renameLoadingShow();
-      axios.post(path + encodeURIComponent(
-        files[editIndex].filename) + '?rename',
-        'filename=' + encodeURIComponent(document.getElementById('rename-input').value)
-      ).then(r => {
-        alert('File name changed');
-        window.location.reload();
-      })
-      .catch(err => {
-        alert('You should login first!');
-        renameLoadingHide();
-      });
-    };
 
   }).catch(e => console.log(e));
 </script>
