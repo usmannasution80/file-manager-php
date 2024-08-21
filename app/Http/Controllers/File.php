@@ -23,12 +23,20 @@ class File extends Controller{
       abort(500);
   }
   public function delete(){
+    set_error_handler(function(){});
+    $scanAndDelete = function($path) use (&$scanAndDelete) {
+      if(unlink($path) || rmdir($path))
+        return;
+      $files = scandir($path);
+      foreach($files as $file)
+        $scanAndDelete($path . '/' . $file);
+      rmdir($path);
+    };
     $path = preg_replace('/\\?.*/', '', urldecode($_SERVER['REQUEST_URI']));
     $path = preg_replace('/\\/+/', '/', env('ROOT') . '/' . $path);
-    if(!is_file($path))
-      abort(404, 'File not found!');
-    unlink($path);
+    $scanAndDelete($path);
     return response()->noContent();
+    restore_error_handler();
   }
   public function rename($new_name){
     $new_name = str_replace('/', '', $new_name);

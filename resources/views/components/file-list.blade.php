@@ -16,7 +16,7 @@
     <button class="btn btn-secondary" data-bs-dismiss="modal">
       Cancel
     </button>
-    <button id="rename-button" class="btn btn-primary">
+    <button id="rename-button" data-bs-dismiss="modal" class="btn btn-primary">
       Save
     </button>
   </x-slot:footer>
@@ -30,7 +30,7 @@
   </x-slot:content>
   <x-slot:footer>
     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-    <button class="btn btn-danger" id="delete-button">Delete</button>
+    <button class="btn btn-danger" data-bs-dismiss="modal" id="delete-button">Delete</button>
   </x-slot:footer>
 </x-dialog>
 <x-loading loadingName="fetchListLoading"/>
@@ -126,19 +126,19 @@
         deleteModalToggler.onclick = e => {
           let index = getElementUpTo(getElementUpTo(e.target, 'li'), 'li').getAttribute('index');
           document.getElementById('filename-to-delete').innerHTML = files[index].filename;
-          editIndex = index;
+          editIndex = parseInt(index);
         };
       }
-  
+
       let renameModalTogglers = fileListContainer.querySelectorAll('[data-bs-target="#rename-modal"]');
       for(let renameModalToggler of renameModalTogglers){
         renameModalToggler.onclick = e => {
           let index = getElementUpTo(getElementUpTo(e.target, 'li'), 'li').getAttribute('index');
           document.getElementById('current-filename').innerHTML = files[index].filename;
-          editIndex = index;
+          editIndex = parseInt(index);
         };
       }
-  
+
       document.getElementById('delete-button').onclick = e => {
         if(files[editIndex].filename === '..')
           return alert('Yout can\'t edit this file');
@@ -146,14 +146,16 @@
         axios.post(path + encodeURIComponent(files[editIndex].filename) + '?delete')
         .then(r => {
           alert('File deleted');
-          window.location.reload();
+          strg('files', {path, files : files.filter((current, index) => index !== editIndex)});
+          setFileList();
+          deleteLoadingHide();
         })
         .catch(err => {
           alert('You should login first!');
           deleteLoadingHide();
         });
       };
-  
+
       document.getElementById('rename-button').onclick = e => {
         if(files[editIndex].filename === '..')
           return alert('You can\'t edit this file');
@@ -163,7 +165,10 @@
           'filename=' + encodeURIComponent(document.getElementById('rename-input').value)
         ).then(r => {
           alert('File name changed');
-          window.location.reload();
+          files[editIndex].filename = document.getElementById('rename-input').value;
+          strg('files', {path, files});
+          setFileList();
+          renameLoadingHide();
         })
         .catch(err => {
           alert('You should login first!');
