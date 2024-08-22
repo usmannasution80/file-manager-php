@@ -45,11 +45,10 @@
     let path = (window.location.pathname + '/').replace(/\/+/, '/');
     strg('files', {path, files : r.data});
     let fileListContainer = document.getElementById('file-list-ul');
-    let files;
 
     setFileList = () => {
       fileListContainer.innerHTML = '';
-      files = sortFileList().files;
+      let {files} = sortFileList();
       const settings = strg('settings') || {};
       if(settings.show_double_point)
         files.unshift({filename : '..', type : 'directory', date : 0});
@@ -166,6 +165,7 @@
         ).then(r => {
           alert('File name changed');
           files[editIndex].filename = document.getElementById('rename-input').value;
+          files[editIndex].date = Math.floor(Date.now() / 1000);
           strg('files', {path, files});
           setFileList();
           renameLoadingHide();

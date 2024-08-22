@@ -70,7 +70,7 @@ function getElementUpTo(currentElement, searchParent){
 }
 
 function sortFileList(files){
-  if(!files){
+  if(arguments.length === 0){
     let {path, files} = strg('files');
     let dirs = [];
     let fls = [];
@@ -78,12 +78,12 @@ function sortFileList(files){
       if(file.type === 'directory')
         dirs.push(file);
       else
-        fls.push(file)
+        fls.push(file);
     }
     return strg('files', {path, files : [...sortFileList(dirs), ...sortFileList(fls)]});
   }
   const compareByName = (file1, file2) => {
-    let filename1 = file2.filename.toLowerCase();
+    let filename1 = file1.filename.toLowerCase();
     let filename2 = file2.filename.toLowerCase();
     for(let i=0;i<filename1.length;i++){
       if(i >= filename2.length)
