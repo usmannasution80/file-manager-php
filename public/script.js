@@ -126,17 +126,21 @@ function sortFileList(files){
 window.onload = () => {
   document.body.addEventListener('click', e => {
     let popupMenuAll = document.getElementsByClassName('popup-menu-content');
-    for(let popupMenu of popupMenuAll)
-      popupMenu.style.display = 'none';
     let btnShow = getElementUpTo(e.target, '[class="popup-show"]');
     if(!btnShow)
       btnShow = e.target.querySelector('.popup-show');
-    if(!btnShow)
+    if(!btnShow){
+      for(let popupMenu of popupMenuAll)
+        popupMenu.style.display = 'none';
       return;
+    }
     let viewportWidth = window.innerWidth;
     let popupMenuContent = btnShow.parentElement.querySelector('.popup-menu-content');
-    if(popupMenuContent.style.display === 'block')
-      return popupMenuContent.style.display = 'none';
+    let currentDisplay = popupMenuContent.style.display;
+    for(let popupMenu of popupMenuAll)
+      popupMenu.style.display = 'none';
+    if(currentDisplay === 'block')
+      return;
     popupMenuContent.style.display = 'block';
     let rect = popupMenuContent.getBoundingClientRect();
     let widthOnViewport = rect.left + popupMenuContent.offsetWidth;

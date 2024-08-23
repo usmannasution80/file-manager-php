@@ -9,14 +9,18 @@
           </button>
         </x-slot:button>
         <x-slot:content>
-          <span data-bs-toggle="modal" data-bs-target="#{{$sortingOptionDialog}}">
-            <i class="fa-solid fa-arrow-down-a-z"></i>
-            <span>Sorting Options</span>
-          </span>
           @if(!$is_path_file)
             <span data-bs-toggle="modal" data-bs-target="#{{$uploadDialog}}">
               <i class="fa-solid fa-file-arrow-up"></i>
               <span>Upload</span>
+            </span>
+            <span data-bs-toggle="modal" data-bs-target="#{{$settingDialog}}">
+              <i class="fa-solid fa-gear"></i>
+              <span>Setting</span>
+            </span>
+            <span data-bs-toggle="modal" data-bs-target="#{{$sortingOptionDialog}}">
+              <i class="fa-solid fa-arrow-down-a-z"></i>
+              <span>Sorting Options</span>
             </span>
           @endif
           @if(Auth::check())
@@ -30,10 +34,6 @@
               <span>Login</span>
             </a>
           @endif
-          <span data-bs-toggle="modal" data-bs-target="#{{$settingDialog}}">
-            <i class="fa-solid fa-gear"></i>
-            <span>Setting</span>
-          </span>
         </x-slot:content>
       </x-popup-menu>
     </div>
