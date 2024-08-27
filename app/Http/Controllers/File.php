@@ -48,4 +48,14 @@ class File extends Controller{
     rename($path . $prev_name, $path . $new_name);
     return urlencode($new_name);
   }
+  public function newFolder($folderName){
+    $path = env('ROOT') . $_SERVER['REQUEST_URI'] . '/';
+    $path = preg_replace('/\\?.*$/', '', $path);
+    $path = preg_replace('/\\/*$/', '/', $path);
+    if(file_exists($path . $folderName))
+      return abort(400, $folderName . ' already exists');
+    if(mkdir($path . $folderName))
+      return response()->noContent();
+    return abort(500);
+  }
 }

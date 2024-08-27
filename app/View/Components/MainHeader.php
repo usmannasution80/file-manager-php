@@ -19,6 +19,9 @@ class MainHeader extends Component{
   public $selectSortBy;
   public $sortByOptions;
   public $settingDialog;
+  public $newFolderDialog;
+  public $newFolderInput;
+  public $newFolderSave;
 
   public function __construct(){
     $this->is_path_file = (new ViewFile())->is_file;
@@ -31,6 +34,9 @@ class MainHeader extends Component{
     $this->logoutButton = generate_random_id();
     $this->selectSortBy = generate_random_id();
     $this->settingDialog = generate_random_id();
+    $this->newFolderDialog = generate_random_id();
+    $this->newFolderInput = generate_random_id();
+    $this->newFolderSave = generate_random_id();
     $this->sortByOptions = [
       'name' => 'Name',
       'date' => 'Date'

@@ -22,6 +22,10 @@
               <i class="fa-solid fa-arrow-down-a-z"></i>
               <span>Sorting Options</span>
             </span>
+            <span data-bs-toggle="modal" data-bs-target="#{{$newFolderDialog}}">
+              <i class="fa-solid fa-folder-plus"></i>
+              <span>New Folder</span>
+            </span>
           @endif
           @if(Auth::check())
             <span id="{{$logoutButton}}">
@@ -99,6 +103,26 @@
   <x-loading loadingName="uploadLoading"/>
 @endif
 <x-loading loadingName="logoutLoading"/>
+<x-dialog id="{{$newFolderDialog}}">
+  <x-slot:title>
+    New Folder
+  </x-slot:title>
+  <x-slot:content>
+    <x-form
+      type="text"
+      placeholder="Folder Name ..."
+      inputId="{{$newFolderInput}}"/>
+  </x-slot:content>
+  <x-slot:footer>
+    <button
+      class="btn btn-primary"
+      data-bs-dismiss="modal"
+      id="{{$newFolderSave}}">
+      Save
+    </button>
+  </x-slot:footer>
+</x-dialog>
+<x-loading loadingName="newFolderLoading"/>
 <script>
 
   (() => {
@@ -185,6 +209,29 @@
       }
       strg('sort-by', document.querySelector('select[name="{{$selectSortBy}}"]').value);
       setFileList();
+    };
+    document.getElementById('{{$newFolderSave}}').onclick = e => {
+      newFolderLoadingShow();
+      let formData = new FormData();
+      formData.append('folder-name', document.getElementById('{{$newFolderInput}}').value);
+      axios.post(
+        window.location.pathname + '?new-folder',
+        formData
+      ).then(r => {
+        let {path, files} = strg('files');
+        files.push({
+          filename : formData.get('folder-name'),
+          date : new Date().valueOf() / 1000,
+          type : 'directory'
+        });
+        strg('files', {path, files});
+        setFileList();
+        newFolderLoadingHide();
+      }).catch(err => {
+        alert('Create folder failed! Open console to see more details.');
+        newFolderLoadingHide();
+        console.log(err);
+      });
     };
     document.getElementById('{{$sortingOptionDialog}}').addEventListener('show.bs.modal', e => {
       let sortingOrderInputs = document.querySelectorAll('input[name={{$sortingOrderInput}}]');

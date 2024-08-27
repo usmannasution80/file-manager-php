@@ -28,6 +28,8 @@ class RequestController extends Controller{
       return (new File())->delete();
     if(isset($_GET['rename']))
       return (new File())->rename($_POST['filename']);
+    if(isset($_GET['new-folder']))
+      return (new File())->newFolder($_POST['folder-name']);
     return (new File())->upload();
   }
 }
