@@ -15,6 +15,7 @@ class ViewFile extends Component{
   public $file_info = null;
   public $next_id = null;
   public $prev_id = null;
+  public $mediaId;
 
   public function __construct($path = null, $set_prev_next = true){
 
@@ -29,6 +30,7 @@ class ViewFile extends Component{
       $this->file_info['size'] = round(filesize($this->path) / 1024 / 1024, 2) . 'MB';
       $this->next_id = generate_random_id();
       $this->prev_id = generate_random_id();
+      $this->mediaId = generate_random_id();
     }
 
   }

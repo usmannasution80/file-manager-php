@@ -12,12 +12,14 @@ class SettingDialog extends Component{
   public $saveButton;
   public $showStartWithPoint;
   public $showDoublePoint;
+  public $autoplayMedia;
 
   public function __construct($id){
     $this->id = $id;
     $this->saveButton = generate_random_id();
     $this->showStartWithPoint = generate_random_id();
     $this->showDoublePoint = generate_random_id();
+    $this->autoplayMedia = generate_random_id();
   }
 
   public function render(): View|Closure|string{

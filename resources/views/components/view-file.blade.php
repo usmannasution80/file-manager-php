@@ -1,11 +1,11 @@
 @if($is_file)
 <div class="card-body">
   @if(preg_match('/audio/i', $file_info['type']))
-    <audio controls>
+    <audio id="{{$mediaId}}" controls>
       <source src="{{$src}}"/>
     </audio>
   @elseif(preg_match('/video/i', $file_info['type']))
-    <video width="100%" controls>
+    <video id="{{$mediaId}}" width="100%" controls>
       <source src="{{$src}}"/>
     </video>
   @elseif(preg_match('/image/i', $file_info['type']))
@@ -87,6 +87,11 @@
 </x-dialog>
 <script>
   (() => {
+    let mediaElement = document.getElementById('{{$mediaId}}');
+    if(mediaElement){
+      mediaElement.autoplay = strg('settings').autoplay_media;
+      mediaElement.muted = mediaElement.autoplay;
+    }
     let path = window.location.pathname.replace(/\/[^\/]+$/, '/');
     const set_prev_next = files => {
       let i = 0;

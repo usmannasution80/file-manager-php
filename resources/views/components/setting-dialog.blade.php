@@ -13,6 +13,11 @@
       type="checkbox"
       label="Show '..'"
       switch/>
+    <x-form
+      inputId="{{$autoplayMedia}}"
+      type="checkbox"
+      label="Autoplay media"
+      switch/>
   </x-slot:content>
   <x-slot:footer>
     <button
@@ -28,7 +33,8 @@
     document.getElementById('{{$saveButton}}').onclick = e => {
       strg('settings', {
         'show_start_with_point' : document.getElementById('{{$showStartWithPoint}}').checked,
-        'show_double_point' : document.getElementById('{{$showDoublePoint}}').checked
+        'show_double_point' : document.getElementById('{{$showDoublePoint}}').checked,
+        'autoplay_media' : document.getElementById('{{$autoplayMedia}}').checked
       });
       setFileList();
     };
@@ -36,6 +42,7 @@
       const settings = strg('settings');
       document.getElementById('{{$showStartWithPoint}}').checked = settings.show_start_with_point;
       document.getElementById('{{$showDoublePoint}}').checked = settings.show_double_point;
+      document.getElementById('{{$autoplayMedia}}').checked = settings.autoplay_media;
     });
   })();
 </script>
