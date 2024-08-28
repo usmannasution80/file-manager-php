@@ -1,41 +1,43 @@
 @if(!$is_file)
 <ul class="list-group list-group-flush" id="file-list-ul">
 </ul>
-<x-dialog id="rename-modal">
-  <x-slot:title>
-    Rename File
-  </x-slot:title>
-  <x-slot:content>
-    <div>
-      <span>Current Filename : </span>
-      <span id="current-filename"></span>
-    </div>
-    <x-form input-id="rename-input" placeholder="New filename"/>
-  </x-slot:content>
-  <x-slot:footer>
-    <button class="btn btn-secondary" data-bs-dismiss="modal">
-      Cancel
-    </button>
-    <button id="rename-button" data-bs-dismiss="modal" class="btn btn-primary">
-      Save
-    </button>
-  </x-slot:footer>
-</x-dialog>
-<x-dialog id="delete-modal">
-  <x-slot:title>
-    WARNING!
-  </x-slot:title>
-  <x-slot:content>
-    Are you sure to delete <span id="filename-to-delete"></span>?
-  </x-slot:content>
-  <x-slot:footer>
-    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-    <button class="btn btn-danger" data-bs-dismiss="modal" id="delete-button">Delete</button>
-  </x-slot:footer>
-</x-dialog>
+@if(Auth::check())
+  <x-dialog id="rename-modal">
+    <x-slot:title>
+      Rename File
+    </x-slot:title>
+    <x-slot:content>
+      <div>
+        <span>Current Filename : </span>
+        <span id="current-filename"></span>
+      </div>
+      <x-form input-id="rename-input" placeholder="New filename"/>
+    </x-slot:content>
+    <x-slot:footer>
+      <button class="btn btn-secondary" data-bs-dismiss="modal">
+        Cancel
+      </button>
+      <button id="rename-button" data-bs-dismiss="modal" class="btn btn-primary">
+        Save
+      </button>
+    </x-slot:footer>
+  </x-dialog>
+  <x-dialog id="delete-modal">
+    <x-slot:title>
+      WARNING!
+    </x-slot:title>
+    <x-slot:content>
+      Are you sure to delete <span id="filename-to-delete"></span>?
+    </x-slot:content>
+    <x-slot:footer>
+      <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button class="btn btn-danger" data-bs-dismiss="modal" id="delete-button">Delete</button>
+    </x-slot:footer>
+  </x-dialog>
+  <x-loading loadingName="renameLoading"/>
+  <x-loading loadingName="deleteLoading"/>
+@endif
 <x-loading loadingName="fetchListLoading"/>
-<x-loading loadingName="renameLoading"/>
-<x-loading loadingName="deleteLoading"/>
 <script>
 
   fetchListLoadingShow();
@@ -78,9 +80,9 @@
           default:
             icon = 'fa-regular fa-file';
         }
-  
+
         let url = path + encodeURIComponent(file['filename']);
-  
+
         fileListContainer.innerHTML += `
           <li class="list-group-item" index="${index}">
             <table>
@@ -93,23 +95,25 @@
                     <span>${file['filename']}</span>
                   </a>
                 </td>
-                <td>
-                  <x-popup-menu>
-                    <x-slot:button>
-                      <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </x-slot:button>
-                    <x-slot:content>
-                      <span data-bs-toggle="modal" data-bs-target="#delete-modal">
-                        <i class="fa-solid fa-trash-can"></i>
-                        <span>Delete</span>
-                      </span>
-                      <span data-bs-toggle="modal" data-bs-target="#rename-modal">
-                        <i class="fa-solid fa-pen"></i>
-                        <span>Rename</span>
-                      </span>
-                    </x-slot:content>
-                  </x-popup-menu>
-                </td>
+                @if(Auth::check())
+                  <td>
+                    <x-popup-menu>
+                      <x-slot:button>
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </x-slot:button>
+                      <x-slot:content>
+                        <span data-bs-toggle="modal" data-bs-target="#delete-modal">
+                          <i class="fa-solid fa-trash-can"></i>
+                          <span>Delete</span>
+                        </span>
+                        <span data-bs-toggle="modal" data-bs-target="#rename-modal">
+                          <i class="fa-solid fa-pen"></i>
+                          <span>Rename</span>
+                        </span>
+                      </x-slot:content>
+                    </x-popup-menu>
+                  </td>
+                @endif
               </tr>
             </table>
           </li>
@@ -118,8 +122,10 @@
 
       fetchListLoadingHide();
 
+      @if(Auth::check())
+
       let editIndex;
-  
+
       let deleteModalTogglers = fileListContainer.querySelectorAll('[data-bs-target="#delete-modal"]');
       for(let deleteModalToggler of deleteModalTogglers){
         deleteModalToggler.onclick = e => {
@@ -175,6 +181,8 @@
           renameLoadingHide();
         });
       };
+
+    @endif
 
     };
 
