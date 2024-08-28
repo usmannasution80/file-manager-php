@@ -5,19 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 class File extends Controller{
+  private $path;
+  public function __construct(){
+    $this->path = preg_replace('/\\?.*$/', '', $_SERVER['REQUEST_URI']);
+    $this->path = env('ROOT') . preg_replace('/\\/+$/', '', $this->path);
+    $this->path = preg_replace('/\\/+/', '/', $this->path);
+    $this->path = urldecode($this->path);
+  }
   public function upload(){
     if(!isset($_FILES['file']))
       abort(400);
-    $path = env('ROOT') . $_SERVER['REQUEST_URI'] . '/';
-    $path = preg_replace('/\\/+/i', '/', $path);
-    $path = urldecode($path);
-    $files = scandir($path);
-    $path .= $_FILES['file']['name'];
+    $files = scandir($this->path);
+    $this->path .= '/' . $_FILES['file']['name'];
     $i = 1;
-    $extension = pathinfo($path, PATHINFO_EXTENSION);
-    while(file_exists($path))
-      $path = preg_replace('/(\\(\\d+\\))?\\.'.$extension.'$/i', ' (' . $i++ . ')', $path) . '.' . $extension;
-    if(move_uploaded_file($_FILES['file']['tmp_name'], $path))
+    $extension = pathinfo($this->path, PATHINFO_EXTENSION);
+    while(file_exists($this->path))
+      $this->path = preg_replace('/(\\(\\d+\\))?\\.'.$extension.'$/i', ' (' . $i++ . ')', $this->path) . '.' . $extension;
+    if(move_uploaded_file($_FILES['file']['tmp_name'], $this->path))
       return response()->noContent();
     else
       abort(500);
@@ -32,29 +36,22 @@ class File extends Controller{
         $scanAndDelete($path . '/' . $file);
       rmdir($path);
     };
-    $path = preg_replace('/\\?.*/', '', urldecode($_SERVER['REQUEST_URI']));
-    $path = preg_replace('/\\/+/', '/', env('ROOT') . '/' . $path);
-    $scanAndDelete($path);
-    return response()->noContent();
+    $scanAndDelete($this->path);
     restore_error_handler();
+    return response()->noContent();
   }
   public function rename($new_name){
-    $new_name = str_replace('/', '', $new_name);
-    $path = env('ROOT') . urldecode($_SERVER['REQUEST_URI']);
-    $path = preg_replace('/\\/+/i', '/', $path);
-    $path = preg_replace('/\\/[^\\/]+$/i', '', $path) . '/';
-    $prev_name = preg_replace('/^.*\\/+/i', '', urldecode($_SERVER['REQUEST_URI']));
-    $prev_name = preg_replace('/\\?.*$/i', '', $prev_name);
-    rename($path . $prev_name, $path . $new_name);
+    $prev_name = preg_replace('/^.*\\/+/i', '', $this->path);
+    $this->path = preg_replace("/$prev_name$/", '', $this->path);
+    $this->path .= '/';
+    rename($this->path . $prev_name, $this->path . $new_name);
     return urlencode($new_name);
   }
   public function newFolder($folderName){
-    $path = env('ROOT') . $_SERVER['REQUEST_URI'] . '/';
-    $path = preg_replace('/\\?.*$/', '', $path);
-    $path = preg_replace('/\\/*$/', '/', $path);
-    if(file_exists($path . $folderName))
+    $this->path .= '/';
+    if(file_exists($this->path . $folderName))
       return abort(400, $folderName . ' already exists');
-    if(mkdir($path . $folderName))
+    if(mkdir($this->path . $folderName))
       return response()->noContent();
     return abort(500);
   }
