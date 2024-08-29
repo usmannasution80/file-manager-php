@@ -18,6 +18,11 @@
       type="checkbox"
       label="Autoplay media"
       switch/>
+    <x-form
+      inputId="{{$nextMediaAutoplay}}"
+      type="checkbox"
+      label="Autoplay next media"
+      switch/>
   </x-slot:content>
   <x-slot:footer>
     <button
@@ -34,7 +39,8 @@
       strg('settings', {
         'show_start_with_point' : document.getElementById('{{$showStartWithPoint}}').checked,
         'show_double_point' : document.getElementById('{{$showDoublePoint}}').checked,
-        'autoplay_media' : document.getElementById('{{$autoplayMedia}}').checked
+        'autoplay_media' : document.getElementById('{{$autoplayMedia}}').checked,
+        'next_media_autoplay' : document.getElementById('{{$nextMediaAutoplay}}').checked
       });
       setFileList();
     };
@@ -43,6 +49,7 @@
       document.getElementById('{{$showStartWithPoint}}').checked = settings.show_start_with_point;
       document.getElementById('{{$showDoublePoint}}').checked = settings.show_double_point;
       document.getElementById('{{$autoplayMedia}}').checked = settings.autoplay_media;
+      document.getElementById('{{$nextMediaAutoplay}}').checked = settings.next_media_autoplay;
     });
   })();
 </script>

@@ -13,6 +13,7 @@ class SettingDialog extends Component{
   public $showStartWithPoint;
   public $showDoublePoint;
   public $autoplayMedia;
+  public $nextMediaAutoplay;
 
   public function __construct($id){
     $this->id = $id;
@@ -20,6 +21,7 @@ class SettingDialog extends Component{
     $this->showStartWithPoint = generate_random_id();
     $this->showDoublePoint = generate_random_id();
     $this->autoplayMedia = generate_random_id();
+    $this->nextMediaAutoplay = generate_random_id();
   }
 
   public function render(): View|Closure|string{

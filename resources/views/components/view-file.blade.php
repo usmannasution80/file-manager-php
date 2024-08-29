@@ -89,8 +89,16 @@
   (() => {
     let mediaElement = document.getElementById('{{$mediaId}}');
     if(mediaElement){
+      let {
+        autoplay_media,
+        next_media_autoplay
+      } = strg('settings');
       mediaElement.autoplay = strg('settings').autoplay_media;
       mediaElement.muted = mediaElement.autoplay;
+      if(next_media_autoplay) mediaElement.onended = e => {
+        let next = document.getElementById('{{$next_id}}');
+        if(next) next.click();
+      };
     }
     let path = window.location.pathname.replace(/\/[^\/]+$/, '/');
     const set_prev_next = files => {
