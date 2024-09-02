@@ -129,6 +129,7 @@
         `;
       }
       fileListContainer.innerHTML = fileListHTML;
+      fetchListLoadingHide();
 
       @if(Auth::check())
 
@@ -194,9 +195,7 @@
 
     };
 
-    document.addEventListener('DOMContentLoaded', e => {
-      setFileList().then(r => fetchListLoadingHide());
-    });
+    setFileList();
 
   })();
 </script>

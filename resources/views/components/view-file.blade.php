@@ -109,7 +109,7 @@
     for(let i=0;i<files.length;i++){
       if(files[i].type !== 'directory' && !firstFileIndex)
         firstFileIndex = i;
-      if(files[i].filename === '{!!$file_info['filename']!!}'){
+      if(files[i].filename === '{!!str_replace('\'', '\\\'', $file_info['filename'])!!}'){
         currentIndex = i;
         break;
       }
