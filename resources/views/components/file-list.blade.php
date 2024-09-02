@@ -91,6 +91,8 @@
         }
 
         let url = path + encodeURIComponent(file['filename']);
+        if(file['filename'] === '..')
+          url = path.replace(/[^\/]+\/*$/, '');
 
         fileListHTML += `
           <li class="list-group-item" index="${index}">
