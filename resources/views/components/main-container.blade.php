@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
     <script src="{{asset('script.js')}}"></script>
+    <script src="{{asset('flags.js')}}"></script>
   </head>
   <body class="bg-secondary">
     {{ $slot }}
