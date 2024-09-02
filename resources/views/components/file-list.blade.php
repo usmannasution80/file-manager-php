@@ -42,15 +42,24 @@
 
   fetchListLoadingShow();
 
-  axios(window.location.pathname + '?list')
-  .then(r => {
+  (function init(){
     let path = (window.location.pathname + '/').replace(/\/+/, '/');
-    strg('files', {path, files : r.data});
-    let fileListContainer = document.getElementById('file-list-ul');
+    let files = sortFileList();
+    if(files.path !== path)
+      return axios(path + '?list').then(r => {
+        strg('files', {path, files : r.data});
+        init();
+      }).catch(err => {
+        alert('There\'s an error while get file list. Check console for more details.');
+        console.log(err);
+      });
 
-    setFileList = () => {
-      fileListContainer.innerHTML = '';
-      let {files} = sortFileList();
+    let fileListContainer = document.getElementById('file-list-ul');
+    files = files.files;
+
+    setFileList = async () => {
+      setTimeout(() => 1, 100);
+      fileListHTML = '';
       const settings = strg('settings') || {};
       if(settings.show_double_point)
         files.unshift({filename : '..', type : 'directory', date : 0});
@@ -83,7 +92,7 @@
 
         let url = path + encodeURIComponent(file['filename']);
 
-        fileListContainer.innerHTML += `
+        fileListHTML += `
           <li class="list-group-item" index="${index}">
             <table>
               <tr>
@@ -119,8 +128,7 @@
           </li>
         `;
       }
-
-      fetchListLoadingHide();
+      fileListContainer.innerHTML = fileListHTML;
 
       @if(Auth::check())
 
@@ -186,8 +194,10 @@
 
     };
 
-    setFileList();
+    document.addEventListener('DOMContentLoaded', e => {
+      setFileList().then(r => fetchListLoadingHide());
+    });
 
-  }).catch(e => console.log(e));
+  })();
 </script>
 @endif
