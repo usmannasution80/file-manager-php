@@ -13,12 +13,12 @@
   @else
     <span>File is not supported.</span>
   @endif
-  <table border="0">
+  <table border="0" style="width:100%; table-layout:fixed">
     @foreach($file_info as $key => $value)
       <tr>
-        <td>{{$key}}</td>
-        <td style="padding: 0px 5px">:</td>
-        <td>{{$value}}</td>
+        <td style="width:70px">{{$key}}</td>
+        <td style="width:20px">:</td>
+        <td style="word-wrap: break-word">{{$value}}</td>
       </tr>
     @endforeach
   </table>
