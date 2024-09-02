@@ -13,9 +13,14 @@ class ViewFile extends Component{
   public $path = '';
   public $src = null;
   public $file_info = null;
-  public $next_id = null;
-  public $prev_id = null;
+  public $next = null;
+  public $prev = null;
   public $mediaId;
+  public $renameInput;
+  public $renameButton;
+  public $renameModal;
+  public $deleteModal;
+  public $deleteButton;
 
   public function __construct($path = null, $set_prev_next = true){
 
@@ -28,9 +33,14 @@ class ViewFile extends Component{
       $this->file_info['filename'] = preg_replace('/^.*\\//i', '', $this->path);
       $this->file_info['type'] = mime_content_type($this->path);
       $this->file_info['size'] = round(filesize($this->path) / 1024 / 1024, 2) . 'MB';
-      $this->next_id = generate_random_id();
-      $this->prev_id = generate_random_id();
+      $this->next = generate_random_id();
+      $this->prev = generate_random_id();
       $this->mediaId = generate_random_id();
+      $this->renameInput = generate_random_id();
+      $this->renameButton = generate_random_id();
+      $this->renameModal = generate_random_id();
+      $this->deleteButton = generate_random_id();
+      $this->deleteModal = generate_random_id();
     }
 
   }
