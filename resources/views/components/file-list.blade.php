@@ -95,39 +95,39 @@
           url = path.replace(/[^\/]+\/*$/, '');
 
         fileListHTML += `
-          <li class="list-group-item" index="${index}">
-            <table>
-              <tr>
-                <td>
-                  <i class="${icon}"></icon>
-                </td>
-                <td>
-                  <a href="${url}">
-                    <span>${file['filename']}</span>
-                  </a>
-                </td>
-                @if(Auth::check())
+          <a href="${url}">
+            <li class="list-group-item" index="${index}">
+              <table>
+                <tr>
                   <td>
-                    <x-popup-menu>
-                      <x-slot:button>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                      </x-slot:button>
-                      <x-slot:content>
-                        <span data-bs-toggle="modal" data-bs-target="#delete-modal">
-                          <i class="fa-solid fa-trash-can"></i>
-                          <span>Delete</span>
-                        </span>
-                        <span data-bs-toggle="modal" data-bs-target="#rename-modal">
-                          <i class="fa-solid fa-pen"></i>
-                          <span>Rename</span>
-                        </span>
-                      </x-slot:content>
-                    </x-popup-menu>
+                    <i class="${icon}"></icon>
                   </td>
-                @endif
-              </tr>
-            </table>
-          </li>
+                  <td>
+                    <span>${file['filename']}</span>
+                  </td>
+                  @if(Auth::check())
+                    <td>
+                      <x-popup-menu>
+                        <x-slot:button>
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </x-slot:button>
+                        <x-slot:content>
+                          <span data-bs-toggle="modal" data-bs-target="#delete-modal">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Delete</span>
+                          </span>
+                          <span data-bs-toggle="modal" data-bs-target="#rename-modal">
+                            <i class="fa-solid fa-pen"></i>
+                            <span>Rename</span>
+                          </span>
+                        </x-slot:content>
+                      </x-popup-menu>
+                    </td>
+                  @endif
+                </tr>
+              </table>
+            </li>
+          </a>
         `;
       }
       fileListContainer.innerHTML = fileListHTML;
