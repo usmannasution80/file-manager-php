@@ -29,7 +29,8 @@ class FileList extends ViewFile {
       array_push($this->files, [
         'filename' => $file,
         'type' => $type,
-        'date' => filemtime($this->path . '/' . $file)
+        'date' => filemtime($this->path . '/' . $file),
+        'size' => preg_match('/directory|\?/i', $type) ? 0 : filesize($this->path . '/' . $file)
       ]);
     }
     restore_error_handler();

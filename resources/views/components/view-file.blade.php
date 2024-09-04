@@ -1,29 +1,9 @@
 @if($is_file)
 <div class="card-body">
-  @if(preg_match('/audio/i', $file_info['type']))
-    <audio id="{{$mediaId}}" controls>
-      <source src="{{$src}}"/>
-    </audio>
-  @elseif(preg_match('/video/i', $file_info['type']))
-    <video id="{{$mediaId}}" width="100%" controls>
-      <source src="{{$src}}"/>
-    </video>
-  @elseif(preg_match('/image/i', $file_info['type']))
-    <img src="{{$src}}" width="100%"/>
-  @else
-    <span>File is not supported.</span>
-  @endif
-  <table border="0" style="width:100%; table-layout:fixed">
-    @foreach($file_info as $key => $value)
-      <tr>
-        <td style="width:70px">{{$key}}</td>
-        <td style="width:20px">:</td>
-        <td style="word-wrap: break-word">{{$value}}</td>
-      </tr>
-    @endforeach
-  </table>
+  <div id="{{$mediaId}}-container"></div>
+  <table id="{{$fileInfoTable}}" border="0" style="width:100%; table-layout:fixed"></table>
   <div style="text-align: center">
-    <a href="{{$src}}" download class="btn btn-primary">
+    <a id="{{$downloadButton}}" download class="btn btn-primary">
       <i class="fa-solid fa-download"></i>
       <span>Download</span>
     </a>
@@ -57,6 +37,7 @@
     </tr>
   </table>
 </div>
+
 @if(Auth::check())
   <x-dialog id="{{$renameModal}}">
     <x-slot:title>
@@ -87,6 +68,7 @@
     </x-slot:footer>
   </x-dialog>
 @endif
+
 <x-loading loadingName="initLoading"/>
 <script>
   (function init(){
@@ -95,6 +77,7 @@
     let firstFileIndex = null;
     let files = sortFileList();
     let path = window.location.pathname.replace(/\/[^\/]+$/, '/');
+    let currentFilename = decodeURIComponent(window.location.pathname.replace(path, ''));
     if(files)
       if(files.path !== path)
         files = null;
@@ -109,11 +92,50 @@
     for(let i=0;i<files.length;i++){
       if(files[i].type !== 'directory' && !firstFileIndex)
         firstFileIndex = i;
-      if(files[i].filename === '{!!str_replace('\'', '\\\'', $file_info['filename'])!!}'){
+      if(files[i].filename === currentFilename){
         currentIndex = i;
         break;
       }
     }
+    (() => {
+      const mediaContainer = document.getElementById('{{$mediaId}}-container');
+      const fileInfoTable = document.getElementById('{{$fileInfoTable}}');
+      const downloadButton = document.getElementById('{{$downloadButton}}');
+      const size = (files[currentIndex].size * Math.pow(10, -6)).toFixed(2) + 'MB';
+      const fileInfoLabels = {
+        filename : 'Filename',
+        type : 'Type',
+        size : 'Size'
+      };
+      let src = path + encodeURIComponent(files[currentIndex].filename) + '?view';
+      let fileInfoTableHTML = '';
+      downloadButton.href = src;
+      switch(files[currentIndex].type.replace(/\/.*$/, '')){
+        case 'video':
+          mediaContainer.innerHTML = `<video id="{{$mediaId}}" width="100%" controls>
+            <source src="${src}"/>
+          </video>`;
+          break;
+        case 'audio':
+          mediaContainer.innerHTML = `<audio id="{{$mediaId}}" controls>
+            <source src="${src}"/>
+          </audio>`;
+          break;
+        case 'image':
+          mediaContainer.innerHTML = `<img src="${src}" width="100%"/>`;
+          break;
+        default:
+          mediaContainer.innerHTML = '<div>The file is not supported to play inline in browser</div>';
+      }
+      for(let label in fileInfoLabels){
+        fileInfoTableHTML += `<tr>
+          <td style="width:70px">${fileInfoLabels[label]}</td>
+          <td style="width:20px">:</td>
+          <td style="word-wrap: break-word">${label === 'size' ? size : files[currentIndex][label]}</td>
+        </tr>`;
+      }
+      fileInfoTable.innerHTML = fileInfoTableHTML;
+    })();
     const navigate = flag => {
       switch(flag){
         case NEXT_FILE :

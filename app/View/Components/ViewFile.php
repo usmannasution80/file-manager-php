@@ -9,18 +9,19 @@ use App\View\Components\FileList;
 
 class ViewFile extends Component{
 
-  public $is_file = false;
-  public $path = '';
-  public $src = null;
-  public $file_info = null;
-  public $next = null;
-  public $prev = null;
+  public $is_file;
+  public $path;
+  public $fileInfoTable;
+  public $next;
+  public $prev;
   public $mediaId;
   public $renameInput;
   public $renameButton;
   public $renameModal;
   public $deleteModal;
   public $deleteButton;
+  public $downloadButton;
+  public $filetype;
 
   public function __construct($path = null, $set_prev_next = true){
 
@@ -28,11 +29,6 @@ class ViewFile extends Component{
     $this->is_file = !is_dir($this->path);
 
     if($this->is_file){
-      $this->src = preg_replace('/\\?[^\\?]+$/', '', $_SERVER['REQUEST_URI']) . '?view';
-      $this->file_info = [];
-      $this->file_info['filename'] = preg_replace('/^.*\\//i', '', $this->path);
-      $this->file_info['type'] = mime_content_type($this->path);
-      $this->file_info['size'] = round(filesize($this->path) / 1024 / 1024, 2) . 'MB';
       $this->next = generate_random_id();
       $this->prev = generate_random_id();
       $this->mediaId = generate_random_id();
@@ -41,6 +37,9 @@ class ViewFile extends Component{
       $this->renameModal = generate_random_id();
       $this->deleteButton = generate_random_id();
       $this->deleteModal = generate_random_id();
+      $this->fileInfoTable = generate_random_id();
+      $this->downloadButton = generate_random_id();
+      $this->filetype = mime_content_type($this->path);
     }
 
   }
@@ -60,7 +59,7 @@ class ViewFile extends Component{
   public function view_file(){
     header('Content-Dispotition: inline');
     header('Content-Transfer-Encoding: binary');
-    header('Content-Type: ' . $this->file_info['type']);
+    header('Content-Type: ' . $this->filetype);
     header('Content-Length: '.filesize($this->path));
     header('Accept-Ranges: 0-' . (filesize($this->path) -1));
     header('Accept-Ranges: bytes');
