@@ -72,10 +72,7 @@ function getElementUpTo(currentElement, searchParent){
 function sortFileList(files){
   if(arguments.length === 0){
     let files = strg('files');
-    if(!files)
-      return {};
-    let path = files.path;
-    files = files.files;
+    let {path, files} = strg('files');
     let dirs = [];
     let fls = [];
     for(let file of files){
@@ -163,3 +160,6 @@ window.onload = () => {
     }
   });
 };
+
+strg('files', {});
+strg('settings', {})
