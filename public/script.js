@@ -71,10 +71,11 @@ function getElementUpTo(currentElement, searchParent){
 
 function sortFileList(files){
   if(arguments.length === 0){
-    let files = strg('files');
     let {path, files} = strg('files');
     let dirs = [];
     let fls = [];
+    if(!files)
+      return [];
     for(let file of files){
       if(file.type === 'directory')
         dirs.push(file);
