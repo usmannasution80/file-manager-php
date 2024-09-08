@@ -16,6 +16,7 @@ function strg(key, value){
       key + '_' + typeof value,
       savedValue
     );
+    strg.onUpdate();
     return value;
   }
   let searchKey = key;
@@ -45,6 +46,12 @@ function strg(key, value){
     }
   }
 }
+strg.updateListeners = [];
+strg.addUpdateListener = f => strg.onChangeListeners.push(f);
+strg.onUpdate = () => {
+  for(let f of strg.onChangeListeners)
+    f();
+};
 
 function getElementUpTo(currentElement, searchParent){
   let attributeKey, attributeValue;
