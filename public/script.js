@@ -170,4 +170,4 @@ window.onload = () => {
 };
 
 strg('files', {});
-strg('settings', {})
+strg('settings', {});
