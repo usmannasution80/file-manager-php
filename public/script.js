@@ -117,12 +117,5 @@ window.onload = () => {
   });
 };
 
-const path = {
-  current : () => {
-    let path = window.location.pathname;
-    path = path.replace(//g)
-  }
-};
-
 strg('files', {});
 strg('settings', {});

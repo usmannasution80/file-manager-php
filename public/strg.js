@@ -46,6 +46,6 @@ function strg(key, value){
 strg.updateListeners = [];
 strg.addUpdateListener = f => strg.onChangeListeners.push(f);
 strg.onUpdate = () => {
-  for(let f of strg.onChangeListeners)
+  for(let f of strg.updateListeners)
     f();
 };
