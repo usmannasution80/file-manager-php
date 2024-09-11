@@ -24,62 +24,6 @@ function getElementUpTo(currentElement, searchParent){
   return currentElement;
 }
 
-function sortFileList(files){
-  if(arguments.length === 0){
-    let {path, files} = strg('files');
-    let dirs = [];
-    let fls = [];
-    if(!files)
-      return [];
-    for(let file of files){
-      if(file.type === 'directory')
-        dirs.push(file);
-      else
-        fls.push(file);
-    }
-    return strg('files', {path, files : [...sortFileList(dirs), ...sortFileList(fls)]});
-  }
-  const compareByName = (file1, file2) => {
-    let filename1 = file1.filename.toLowerCase();
-    let filename2 = file2.filename.toLowerCase();
-    for(let i=0;i<filename1.length;i++){
-      if(i >= filename2.length)
-        return [file1, file2];
-      if(filename1.charCodeAt(i) < filename2.charCodeAt(i))
-        return [file1, file2];
-      if(filename1.charCodeAt(i) > filename2.charCodeAt(i))
-        return [file2, file1, true];
-    }
-    return [file1, file2];
-  };
-  const compareByDate = (file1, file2) => {
-    if(file1.date > file2.date)
-      return [file2, file1, true];
-    return [file1, file2];
-  };
-  const compare = (file1, file2) => {
-    switch(strg('sort-by')){
-      case 'date':
-        return compareByDate(file1, file2);
-      default:
-        return compareByName(file1, file2);
-    }
-  };
-  let isThereChange = true;
-  let length = files.length;
-  while(isThereChange){
-    isThereChange = false;
-    for(let i=1; i<length; i++)
-      [files[i-1], files[i], isThereChange = isThereChange] = compare(files[i-1], files[i]);
-  }
-  if(strg('sorting-order') === 'desc'){
-    let tempFiles = [...files];
-    for(let i=tempFiles.length-1,j=0;i>=0;i--)
-      files[j++] = tempFiles[i];
-  }
-  return files;
-}
-
 window.onload = () => {
   document.body.addEventListener('click', e => {
     let popupMenuAll = document.getElementsByClassName('popup-menu-content');

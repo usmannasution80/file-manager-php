@@ -71,24 +71,14 @@
 
 <x-loading loadingName="initLoading"/>
 <script>
-  (function init(){
+  (async function init(){
     initLoadingShow();
     let currentIndex = null;
     let firstFileIndex = null;
-    let files = sortFileList();
-    let path = window.location.pathname.replace(/\/[^\/]+$/, '/');
+    let files = await file.currentDirectoryList();
+    let path = file.parentDirectory() + '/';
     let currentFilename = decodeURIComponent(window.location.pathname.replace(path, ''));
-    if(files)
-      if(files.path !== path)
-        files = null;
-    if(!files)
-      return axios.get(path + '?list')
-      .then(r => {
-        strg('files', {path, files : r.data});
-        init();
-      });
     initLoadingHide();
-    files = files.files;
     for(let i=0;i<files.length;i++){
       if(files[i].type !== 'directory' && !firstFileIndex)
         firstFileIndex = i;

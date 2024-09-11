@@ -20,6 +20,8 @@ class FileList extends ViewFile {
   }
 
   public function set_files(){
+    if($this->is_file)
+      return abort(400, 'Current path is point to a file, not directory!');
     set_error_handler(function(){});
     $files = scandir($this->path);
     foreach($files as $file){
